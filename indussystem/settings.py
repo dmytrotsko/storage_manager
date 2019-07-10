@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'storage_manager.apps.StorageManagerConfig',
+    'service_manager',
+    'check_in_manager',
+    'indussystem'
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,54 @@
+
+<form method="POST">
+    {% csrf_token %}
+    <label for="service_name_select">Add expense for service</label>
+    <select id="service_name_select" name="service_name_select">
+        {% for service in services_types %}
+        <option value="{{ service }}">{{ service }}</option>
+
+        {% endfor %}
+    </select>
+    <input type="text" id="service_price" name="service_price" value="0">
+    <input type="submit" value="OK">
+</form>
+<hr>
+<form method="POST">
+    {% csrf_token %}
+    <label for="service_type_add">Add service type</label>
+    <input type="text" id="service_type_add" name="service_type_add">
+    <input type="submit" value="OK">
+</form>
+<hr>
+<table>
+    <tr>
+        <td>Name</td>
+        <td>Price</td>
+        <td>date</td>
+    </tr>
+    {% for expense in expenses %}
+        <tr>
+            <td><a> {{ expense.type }}</a></td>
+            <td>{{ expense.price }}$</td>
+            <td>{{ expense.date }}</td>
+
+        </tr>
+    {% endfor %}
+</table>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if expenses.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ expenses.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ expenses.number }} of {{ expenses.paginator.num_pages }}.
+        </span>
+
+        {% if expenses.has_next %}
+            <a href="?page={{ expenses.next_page_number }}">next</a>
+            <a href="?page={{ expenses.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>

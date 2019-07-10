@@ -1,3 +1,4 @@
 from django.contrib import admin
+from indussystem.models import Villa
 
-# Register your models here.
+admin.site.register(Villa)
