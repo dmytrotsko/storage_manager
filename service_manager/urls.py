@@ -3,5 +3,5 @@ from .views import villa_list, villa_expenses
 
 urlpatterns = [
     path('', villa_list, name="villas_list"),
-    path("/<int:pk>/expenses", villa_expenses, name='villa_expenses'),
+    path("<int:pk>/expenses", villa_expenses, name='villa_expenses'),
 ]
