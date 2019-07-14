@@ -102,3 +102,11 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+service_manager/migrations
+indussystem/migrations
+check_in_manager/migrations
+.idea
+.env
+venv
+.vscode

@@ -49,7 +49,7 @@ def villa_reports(request, villa_id):
 
     page = request.GET.get('page')
     reports = paginator.get_page(page)
-    return render(request, "service_manager/villa_reports.html", {'reprots': reports)
+    return render(request, "service_manager/villa_reports.html", {'reprots': reports})
 
 
 def generate_update_report(request, villa_id, for_custom_period=1,update=0):
