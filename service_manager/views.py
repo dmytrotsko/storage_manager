@@ -42,3 +42,15 @@ def villa_expenses(request, pk):
     return render(request, "service_manager/villa_expenses.html", {'expenses': expenses,
                                                                     'services_types': services_types})
 
+def villa_reports(request, villa_id):
+    villa = Villa.objaects.get(pk=villa_id)
+    villa_reports_list = VillaReports.objects.get(villa = villa)
+    paginator = Paginator(villa_reports_list, 25)
+
+    page = request.GET.get('page')
+    reports = paginator.get_page(page)
+    return render(request, "service_manager/villa_reports.html", {'reprots': reports)
+
+
+def generate_update_report(request, villa_id, for_custom_period=1,update=0):
+    villa = Villa.objaects.get(pk=villa_id)
