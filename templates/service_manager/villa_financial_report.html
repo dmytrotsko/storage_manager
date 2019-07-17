@@ -1,0 +1,24 @@
+<form method="POST">
+    {% csrf_token %}
+    <label for="start_date">Date from</label>
+    <input type="date" id="start_date" name="start_date" value="{{start_date}}">
+
+    <label for="end_date">End date</label>
+    <input type="date" id="end_date" name="end_date" value="{{end_date}}">
+    {%if report%}
+        <label for="income">Income</label>
+        <input type="number" id="income" name="income" value="{{report.income}}">
+
+        <label for="occupancy">Occupied Nights</label>
+        <input type="number" id="occupancy" name="occupancy" value="{{report.occupancy}}" min="0" max="31">
+
+    {%else%}
+            <label for="income">Income</label>
+            <input type="text" id="income" name="income" >
+
+            <label for="occupancy">Occupied Nights</label>
+            <input type="number" id="occupancy" name="occupancy" value="0" min="0" max="31">
+    {%endif%}
+
+    <input type="submit" value="OK">
+</form>
