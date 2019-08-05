@@ -1,0 +1,41 @@
+<table>
+    <tr>
+        <td>Villa</td>
+        <td>Income</td>
+        <td>Expences</td>
+        <td>Profit</td>
+        <td>Everange price</td>
+        <td>For period</td>
+        <td>Date</td>
+
+    </tr>
+{% for report in reports %}
+    <tr>
+        <td>{% report.villa.name %}</td>
+        <td>{% report.income %}</td>
+        <td>{% report.expences %}</td>
+        <td>{% report.profit %}</td>
+        <td>{% report.average.price %}</td>
+        <td>{% report.month_name %}/{% report.year%}</td>
+        <td>{% report.date_time %}</td>
+    </tr>
+{% endfor %}
+</table>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if reports.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ reports.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ reports.number }} of {{ reports.paginator.num_pages }}.
+        </span>
+
+        {% if reports.has_next %}
+            <a href="?page={{ reports.next_page_number }}">next</a>
+            <a href="?page={{ reports.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>

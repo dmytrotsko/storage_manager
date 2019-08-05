@@ -5,6 +5,33 @@
     {% include 'includes.html' %}
 </head>
 <body>
+<div class="container">
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col">
+            <label for="search">Search:</label>
+            <input class="form-control" type="text" id="search" name="search" onchange="showSearch()">
+            <div id="search_result">
 
+            </div>
+        </div>
+        <div class="col-3"></div>
+    </div>
+</div>
+<script>
+  function showSearch() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("search_result").innerHTML = this.responseText;
+      }
+    };
+    q = document.getElementById('search').value;
+    xhttp.open("GET", "/stm/ajax_search?q=" + q, true);
+    xhttp.send();
+  }
+
+  showSearch()
+</script>
 </body>
 </html>

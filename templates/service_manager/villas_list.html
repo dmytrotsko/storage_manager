@@ -8,8 +8,7 @@
     <tr>
         <td><a href="service_manager/{{ villa.id }}"> {{ villa.name }}</a></td>
         <td><a href="{% url 'villa_expenses' villa.id %}"><button>spendings</button></a></td>
-        <td><a href="service_manager/{{ villa.id }}/reports"><button >reports</button></a></td>
-
+        <td><a href="{% url 'villa_reports' villa.id %}"><button >reports</button></a></td>
     </tr>
 {% endfor %}
 </table>

@@ -6,3 +6,6 @@ class Villa(models.Model):
 
     class Meta:
         db_table = "Villa"
+
+    def __str__(self):
+        return self.name

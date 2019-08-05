@@ -1,5 +1,4 @@
 import datetime
-
 from django.db import models
 from indussystem.models import Villa
 
@@ -33,11 +32,11 @@ class VillaReports(models.Model):
     villa = models.ForeignKey(Villa, related_name='villa', null=True, blank=True, on_delete=models.CASCADE)
     income = models.FloatField(default=0)
     expenses = models.FloatField(default=0)
-    occupancy = models.FloatField(default=0)
+    occupancy = models.IntegerField(default=0)
     profit = models.FloatField(default=0)
-    average_price = models.FloatField(default=0)
-    month = models.IntegerField(default=0)
-    year = models.IntegerField(default=0)
+    averange_price = models.FloatField(default=0)
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
 
     class Meta:
         db_table = 'VillaReport'
@@ -47,6 +46,3 @@ class VillaReports(models.Model):
 
     def __float__(self):
         return self.income, self.expenses, self.occupancy
-
-    def month_name(self):
-        return datetime.date(self.year, self.month, 1).strftime('%B')

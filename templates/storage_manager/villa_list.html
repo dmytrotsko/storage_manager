@@ -1,0 +1,38 @@
+{% load filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% include 'includes.html' %}
+    <div class="container">
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col">
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Items count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for villa in villas %}
+                        <tr>
+                            <th scope="row">{{ villa.id }}</th>
+                            <td>{{ villa.name }}</td>
+                            <td>{{ villa|item_count }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-3"></div>
+        </div>
+    </div>
+</head>
+<body>
+
+</body>
+</html>
