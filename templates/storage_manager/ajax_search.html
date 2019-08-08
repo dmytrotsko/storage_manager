@@ -1,4 +1,25 @@
 {% load filters %}
+<h2>Storages</h2>
+<h4>Storages found: {{ villas|length }}</h4>
+<table class="table table-dark table-hover">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Items Sum</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for v in villas %}
+        <tr onclick="document.location = '{% url 'villa_details' v.id %}';">
+            <td>{{ forloop.counter }}</td>
+            <td>{{ v.name }}</td>
+            <td>{{ v|item_count }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<hr>
 <h2>Items</h2>
 <h4>Items found: {{ items|length }}</h4>
 <table class="table table-dark">
@@ -21,24 +42,4 @@
     {% endfor %}
     </tbody>
 </table>
-<hr>
-<h2>Storages</h2>
-<h4>Storages found: {{ villas|length }}</h4>
-<table class="table table-dark">
-    <thead>
-    <tr>
-        <th>#</th>
-        <th>Name</th>
-        <th>Items Sum</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for v in villas %}
-        <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ v.name }}</td>
-            <td>{{ v|item_count }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+

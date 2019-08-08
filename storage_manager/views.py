@@ -27,7 +27,20 @@ def villa_details(request, id):
 
 
 def create_item(request):
-    return render(request, 'storage_manager/create_item.html')
+    villas = Villa.objects.all()
+
+    if request.method == 'POST':
+        item_name = request.POST['item_name']
+        item_storage_id = request.POST['item_storage']
+        item_quantity = int(request.POST['item_quantity'])
+
+        Item.objects.create(name=item_name,
+                            storage=Villa.objects.get(pk=item_storage_id),
+                            quantity=item_quantity)
+
+    ctx = {'villas': villas}
+
+    return render(request, 'storage_manager/create_item.html', ctx)
 
 
 def ajax_search(request):
