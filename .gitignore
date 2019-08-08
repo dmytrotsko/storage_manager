@@ -274,4 +274,9 @@ fabric.properties
 
 # End of https://www.gitignore.io/api/python,django,pycharm
 
-.idea
+.idea/
+.vscode/
+indussystem/migrations/
+service_manager/migrations/
+check_in_manager/migrations/
+storage_manager/migrations/
