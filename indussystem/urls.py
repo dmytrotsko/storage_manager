@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('service_manager/', include('service_manager.urls')),
     path('stm/', include('storage_manager.urls')),
+    path('check_in_manager/', include('check_in_manager.urls'))
 ]
 
 if settings.DEBUG:
