@@ -48,7 +48,7 @@ class Order(models.Model):
     order_creator = models.ForeignKey(User, on_delete=models.CASCADE)
     order_guest_name = models.CharField(max_length=255)
     order_guest_cell_number = models.CharField(max_length=255)
-    order_guest_email = models.CharField(max_length=255)
+    order_guest_email = models.EmailField()
     order_guest_whatsapp = models.CharField(max_length=255)
     order_guest_check_in_date = models.DateField(auto_now_add=False)
     order_guest_check_out_date = models.DateField(auto_now_add=False)
@@ -77,15 +77,3 @@ class Order(models.Model):
 
     class Meta:
         db_table = 'Order'
-
-
-class Call(models.Model):
-    call_date = models.DateField(auto_now_add=True)
-    call_message = models.TextField(null=True, blank=True)
-    call_order = models.ForeignKey(Order, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return str(self.call_date)
-
-    class Meta:
-        db_table = 'Call'

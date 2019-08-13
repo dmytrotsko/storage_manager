@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order #{{ order.id }} Details</title>
+</head>
+<body>
+{% if should_be_alerted %}
+    <form method="POST">
+        <h3>This guest will arrive tomorrow.Please don't forget to contact him</h3>
+        {% csrf_token %}
+        <button type="submit" id="alert_done" name="alert_done">Done</button>
+    </form>
+{% endif %}
+Order #{{ order.id }} created by {{ order.order_creator }}
+<a href="{% url 'edit_order' order.id %}">Edit order</a>
+{% if order.order_waiting_for_manager %}
+    In Process
+{% elif order.order_accepted_by_client %}
+    Chosen villa: {{ order.order_chosen_villa }}
+{% elif order.order_declined_by_client %}
+    Declined. Reason: {{ order.order_decline_reason }}
+{% endif %}
+Guest name: {{ order.order_guest_name }}
+Guest cell number: {{ order.order_guest_cell_number }}
+Guest e-mail: {{ order.order_guest_email }}
+Guest WhatsApp: {{ order.order_guest_whatsapp }}
+Check-in date: {{ order.order_guest_check_in_date }} {# TODO: add color if early check_in required #}
+Check-out date: {{ order.guest_check_out_date }} {# TODO: add color if late check_out required #}
+Number of adults: {{ order.order_number_of_adults }}
+Number of kids: {{ order.order_number_of_kids }}
+Occupancy time: <strong>{{ order.order_guest_check_in_date|timesince:order.order_guest_check_out_date }} </strong>
+Guest balance: {{ order.order_guest_balance }}
+Order price: {{ order.order_price }}
+Inclusions:
+{% for inclusion in order.order_inclusions.all %}
+    {{ inclusion.inclusion_text }}
+{% endfor %}
+Notes: {{ order.order_notes }}
+Comment: {{ order.order_comment }}
+
+</body>
+</html>

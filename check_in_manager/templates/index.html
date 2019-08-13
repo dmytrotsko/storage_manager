@@ -37,7 +37,7 @@
     {% for order in orders %}
         <tr>
             <td>
-                <a href="/check_in_manager/order_list/order/{{ order.id }}">{{ order.id }}</a>
+                <a href="/check_in_manager/orders_table/order/{{ order.id }}/details">{{ order.id }}</a>
             </td>
             <td>
                 {% if order.order_waiting_for_manager %}
@@ -82,6 +82,6 @@
         </tr>
     {% endfor %}
     </tbody>
-</table>exit
+</table>
 </body>
 </html>

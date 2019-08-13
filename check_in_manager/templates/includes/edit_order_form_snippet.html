@@ -1,0 +1,13 @@
+<form method="POST">
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="fieldWrapper">
+            {{ field.errors }}
+            {{ field.label }} {{ field }}
+            {% if field.help_text %}
+                <p class="help">{{ field.help_text }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <input type="submit" value="Save">
+</form>

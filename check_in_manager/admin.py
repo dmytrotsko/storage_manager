@@ -1,11 +1,12 @@
 from django.contrib import admin
+
 from .models import (
     Source,
     SpecOccasion,
     Offer,
     Inclusion,
     Order,
-    Call
+    # Call
 )
 
 
@@ -81,14 +82,14 @@ class OrderAdmin(admin.ModelAdmin):
 admin.site.register(Order, OrderAdmin)
 
 
-class CallAdmin(admin.ModelAdmin):
-    list_display = (
-        'call_date', 'call_message',
-        'call_order',
-    )
-    search_fields = (
-        'call_date',
-    )
-
-
-admin.site.register(Call, CallAdmin)
+# class CallAdmin(admin.ModelAdmin):
+#     list_display = (
+#         'call_date', 'call_message',
+#         'call_order',
+#     )
+#     search_fields = (
+#         'call_date',
+#     )
+#
+#
+# admin.site.register(Call, CallAdmin)
