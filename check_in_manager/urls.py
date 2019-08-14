@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import index, order_details, edit_order
+from check_in_manager import views
 
 urlpatterns = [
-    path('', index, name="orders_table"),
-    path('orders_table/order/<int:order_id>/details/', order_details),
-    path('orders_table/order/<int:order_id>/details/edit', edit_order, name='edit_order'),
+    path('', views.index, name="orders_table"),
+    path('orders_table/order/<int:order_id>/details/', views.order_details, name='order_details'),
+    path('orders_table/order/<int:order_id>/details/edit', views.edit_order, name='edit_order'),
+    path('create_order/', views.create_order, name='create_order')
 ]

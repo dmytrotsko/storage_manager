@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
-from .forms import EditOrderForm
+from .forms import OrderForm
 from .models import *
 
 
@@ -31,21 +31,33 @@ def order_details(request, order_id):
 
 def edit_order(request, order_id):
     order = Order.objects.get(id=order_id)
-    sources = Source.objects.all()
-    spec_occasions = SpecOccasion.objects.all()
-
     if request.method == 'POST':
-        form = EditOrderForm(instance=order, data=request.POST)
+        form = OrderForm(instance=order, data=request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect("/check_in_manager/orders_table/order/{}/details/".format(order_id))
     else:
-        form = EditOrderForm(instance=order)
+        form = OrderForm(instance=order)
 
     ctx = {
         'order': order,
-        'sources': sources,
-        'spec_occasions': spec_occasions,
         'form': form
     }
     return render(request, 'edit_order.html', ctx)
+
+
+def create_order(request):
+    # TODO: Add possibility to create Inclusion, SpecOccasion, Source and couple of Offers while creating Order
+    if request.method == 'POST':
+        form = OrderForm(data=request.POST)
+        if form.is_valid():
+            new_order = form.save(commit=False)
+            new_order.order_creator = request.user
+            new_order.save()
+            return HttpResponseRedirect("/check_in_manager/orders_table/order/{}/details/".format(new_order.id))
+    else:
+        form = OrderForm()
+    ctx = {
+        'form': form
+    }
+    return render(request, 'create_order.html', ctx)
