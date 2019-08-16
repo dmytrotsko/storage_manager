@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from indussystem.models import Villa
 from .models import *
+from django.core.exceptions import ObjectDoesNotExist
 
 
 # Create your views here.
@@ -19,9 +20,34 @@ def villa_list(request):
 def villa_details(request, id):
     villa = Villa.objects.get(pk=id)
     items = Item.objects.filter(storage=villa)
+    villas = Villa.objects.exclude(pk=id)
+
+    if request.method == 'POST':
+        item_name = request.POST['item_name']
+        quantity = int(request.POST['quantity'])
+        target_storage_id = request.POST['target_storage']
+
+        target_item = Item.objects.get(name=item_name, storage=villa)
+        if target_item.quantity <= quantity:
+            quantity = target_item.quantity
+            target_item.delete()
+        else:
+            target_item.quantity -= quantity
+            target_item.save()
+
+        try:
+            old_item = Item.objects.get(name=item_name, storage=target_storage_id)
+            old_item.quantity += quantity
+            old_item.save()
+
+        except ObjectDoesNotExist:
+            Item.objects.create(name=item_name,
+                                quantity=quantity,
+                                storage=Villa.objects.get(pk=target_storage_id))
 
     ctx = {'villa': villa,
-           'items': items}
+           'items': items,
+           'villas': villas}
 
     return render(request, 'storage_manager/villa_details.html', ctx)
 
