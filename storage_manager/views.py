@@ -30,10 +30,8 @@ def villa_details(request, id):
     items = Item.objects.filter(storage=villa)
     villas = Villa.objects.exclude(pk=id)
 
-    # print(a)
-
     if request.method == 'POST':
-        if request.POST.get('transferItem'):
+        if request.POST.get('itemTransfer') == '':
             item_name = request.POST['item_name_to_transfer']
             quantity = int(request.POST['quantity'])
             target_storage_id = request.POST['target_storage']
@@ -56,14 +54,29 @@ def villa_details(request, id):
                                     quantity=quantity,
                                     storage=Villa.objects.get(pk=target_storage_id))
 
+            return redirect(add_parameters(request, transfer=f'{item_name}|{Villa.objects.get(pk=target_storage_id).name}'))
+
         if request.POST.get('deleteItem') == '':
             print('delete')
             item_name = request.POST['item_name_to_delete']
             Item.objects.get(name=item_name, storage=id).delete()
+            return redirect(add_parameters(request, deleted=f'{item_name}'))
 
     ctx = {'villa': villa,
            'items': items,
-           'villas': villas}
+           'villas': villas,
+           'transfer': None,
+           'transfer_destination': None,
+           'deleted': None,
+           }
+
+    if request.GET.get('deleted'):
+        ctx['deleted'] = request.GET.get('deleted')
+
+    if request.GET.get('transfer'):
+        tmp = request.GET.get('transfer').split('|')
+        ctx['transfer'] = tmp[0]
+        ctx['transfer_destination'] = tmp[1]
 
     return render(request, 'storage_manager/villa_details.html', ctx)
 
