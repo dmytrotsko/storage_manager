@@ -14,7 +14,7 @@
         <div class="col">
             <h1>Villa List</h1>
             <hr>
-            <table class="table table-dark">
+            <table class="table table-dark table-hover">
                 <thead>
                 <tr>
                     <th scope="col">Id</th>
@@ -24,7 +24,7 @@
                 </thead>
                 <tbody>
                 {% for villa in villas %}
-                    <tr>
+                    <tr onclick="document.location = '{% url 'villa_details' villa.id %}';">
                         <th scope="row">{{ villa.id }}</th>
                         <td>{{ villa.name }}</td>
                         <td>{{ villa|item_count }}</td>

@@ -11,24 +11,32 @@
     <div class="row">
         <div class="col-3"></div>
         <div class="col">
+            {% if item %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    You successfully created <strong>{{ item }}</strong>.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endif %}
             <form action="" method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="item_name">Item Name:</label>
-                <input class="form-control" type="text" name="item_name" id="item_name">
-            </div>
-            <div class="form-group">
-                <label for="item_quantity">Quantity</label>
-                <input class="form-control" type="number" min="1" step="1" name="item_quantity" id="item_quantity">
-            </div>
-            <div class="form-group">
-                <label for="item_storage">Villa</label>
-                <select class="form-control" name="item_storage" id="item_storage">
-                     {% for v in villas %}
-                         <option value="{{ v.id }}">{{ v.name }}</option>
-                     {% endfor %}
-                </select>
-            </div>
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="item_name">Item Name:</label>
+                    <input class="form-control" type="text" name="item_name" id="item_name">
+                </div>
+                <div class="form-group">
+                    <label for="item_quantity">Quantity</label>
+                    <input class="form-control" type="number" min="1" step="1" name="item_quantity" id="item_quantity">
+                </div>
+                <div class="form-group">
+                    <label for="item_storage">Villa</label>
+                    <select class="form-control" name="item_storage" id="item_storage">
+                        {% for v in villas %}
+                            <option value="{{ v.id }}">{{ v.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
                 <button type="submit" class="btn btn-dark">Submit</button>
             </form>
         </div>
