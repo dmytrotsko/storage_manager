@@ -1,0 +1,43 @@
+{% url 'index' as index_url %}
+{% url 'stm_index' as stm_index %}
+{% url 'create_item' as create_item %}
+{% url 'villa_list' as villa_list %}
+{% url 'villas_list' as srv %}
+{% url 'orders_table' as chk %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item {% if request.path == index_url %}active{% endif %}">
+                <a class="nav-link" href="{{ index_url }}">
+                    Home{% if request.path == index_url %}<span class="sr-only">(current)</span>{% endif %}
+                </a>
+            </li>
+            <li class="nav-item {% if request.path == stm_index %}active{% endif %}">
+                <a class="nav-link" href="{{ stm_index }}">
+                    Search{% if request.path == stm_index %}<span class="sr-only">(current)</span>{% endif %}
+                </a>
+            </li>
+            <li class="nav-item {% if request.path == villa_list %}active{% endif %}">
+                <a class="nav-link" href="{{ villa_list }}">
+                    Villa List{% if request.path == villa_list %}<span class="sr-only">(current)</span>{% endif %}
+                </a>
+            </li>
+            <li class="nav-item {% if request.path == create_item %}active{% endif %}">
+                <a class="nav-link" href="{{ create_item }}">
+                    Create Item{% if request.path == create_item %}<span class="sr-only">(current)</span>{% endif %}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-outline-light" href="{{ srv }}">Service Manager</a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-outline-light" href="{{ chk }}">Check-in Manager</a>
+            </li>
+        </ul>
+    </div>
+</nav>

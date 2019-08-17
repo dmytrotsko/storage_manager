@@ -2,6 +2,7 @@ from django.shortcuts import render
 from indussystem.models import Villa
 from .models import *
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -11,6 +12,10 @@ def stm_index(request):
 
 def villa_list(request):
     villas = Villa.objects.all()
+    paginator = Paginator(villas, 25)
+
+    page = request.GET.get('page')
+    villas = paginator.get_page(page)
 
     ctx = {'villas': villas}
 

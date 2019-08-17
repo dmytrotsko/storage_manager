@@ -3,10 +3,11 @@ from dateutil.relativedelta import relativedelta
 from django.core.paginator import Paginator
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 from django.utils.dateparse import parse_date
 from indussystem.models import Villa
 from .models import VillaReports, Service, ServiceType
+from indussystem.parameters import add_parameters
 
 
 def villa_list(request):
@@ -32,6 +33,8 @@ def villa_expenses(request, pk):
             try:
                 service_type = ServiceType(name=service_type_to_add)
                 service_type.save()
+                print(add_parameters(request, service=service_type_to_add))
+                return redirect(add_parameters(request, service=service_type_to_add))
             except IntegrityError:
                 pass
         service_name_to_add = request.POST.get("service_name_select")
@@ -40,10 +43,20 @@ def villa_expenses(request, pk):
             price = int(request.POST.get("service_price"))
             service = Service(type=chosen_type, price=price, villa=villa)
             service.save()
+            return redirect(add_parameters(request, expense=chosen_type))
         return HttpResponseRedirect(f"/service_manager/{pk}/expenses")
 
     ctx = {'expenses': expenses,
-           'services_types': services_types}
+           'services_types': services_types,
+           'villa': villa,
+           'service': None,
+           'expense': None}
+
+    if request.GET.get('service'):
+        ctx['service'] = request.GET.get('service')
+
+    if request.GET.get('expense'):
+        ctx['expense'] = request.GET.get('expense')
 
     return render(request, "service_manager/villa_expenses.html", ctx)
 

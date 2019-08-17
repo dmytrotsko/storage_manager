@@ -1,48 +1,98 @@
-<a href="{% url 'new_report' villa.id %}"><button>New Report</button></a>
-<table>
-    <tr>
-        <td>Villa</td>
-        <td>Income</td>
-        <td>Expences</td>
-        <td>Profit</td>
-        <td>Ocupied Nigths</td>
-        <td>Everange price</td>
-        <td>For period</td>
-        <td>Date</td>
-        <td>Edit</td>
-        <td>Delete</td>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    {% include 'includes.html' %}
+</head>
+<body>
+{% include 'service_manager/navbar.html' %}
+<div class="container">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-"><a class="btn btn-primary" href="{% url 'new_report' villa.id %}">
+            New Report
+        </a>
+            <table class="table table-dark">
+                <thead>
+                <tr>
+                    <td>Villa</td>
+                    <td>Income</td>
+                    <td>Expences</td>
+                    <td>Profit</td>
+                    <td>Ocupied Nigths</td>
+                    <td>Everange price</td>
+                    <td>For period</td>
+                    <td>Date</td>
+                    <td>Edit</td>
+                    <td>Delete</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for report in reports %}
+                    <tr>
+                        <td>{{ report.villa.name }}</td>
+                        <td>{{ report.income }}</td>
+                        <td>{{ report.expenses }}</td>
+                        <td>{{ report.profit }}</td>
+                        <td>{{ report.occupancy }}</td>
+                        <td>{{ report.averange_price }}</td>
+                        <td>{{ report.start_date | date:"d/M/Y" }}-{{ report.end_date | date:"d/M/Y" }}</td>
+                        <td>{{ report.datetime | date:"d/M/Y" }}</td>
+                        <td><a class="btn btn-warning"
+                               href="{% url 'edit_report' villa_id=villa.id report_id=report.id %}">
+                            Edit
+                        </a>
+                        </td>
+                        <td><a class="btn btn-danger"
+                               href="{% url 'edit_report' villa_id=villa.id report_id=report.id %}">
+                            Delete
+                        </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <nav aria-label="...">
+            <ul class="pagination">
+                <li class="page-item {% if not reports.has_previous %}disabled{% endif %}">
+                    {% if reports.has_previous %}
+                        <a href="{% url 'villa_reports' villa.id %}?page={{ reports.previous_page_number }}"
+                           class="page-link bg-dark text-white">Previous</a>
+                    {% else %}
+                        <span class="page-link bg-dark disabled">Previous</span>
+                    {% endif %}
+                </li>
+                {% for page in reports.paginator.page_range %}
+                    <li class="page-item {% if page == reports.number %}bg-white{% else %}bg-dark{% endif %}">
+                        {% if page != reports.number %}
+                            <a class="page-link bg-dark text-white"
+                               href="{% url 'villa_reports' villa.id %}?page={{ page }}">{{ page }}</a>
+                        {% else %}
+                            <span class="page-link bg-white text-dark">{{ page }}<span class="sr-only">(current)</span></span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+                <li class="page-item {% if not reports.has_next %}disabled{% endif %}">
+                    {% if reports.has_next %}
+                        <a class="bg-dark text-white page-link"
+                           href="{% url 'villa_reports' villa.id %}?page={{ reports.next_page_number }}">Next</a>
+                    {% else %}
+                        <span class="page-link disabled">Next</span>
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
 
-    </tr>
-{% for report in reports %}
-    <tr>
-        <td>{{ report.villa.name }}</td>
-        <td>{{ report.income }}</td>
-        <td>{{ report.expenses }}</td>
-        <td>{{ report.profit }}</td>
-        <td>{{ report.occupancy}}</td>
-        <td>{{ report.averange_price }}</td>
-        <td>{{report.start_date | date:"d/M/Y"}}-{{report.end_date | date:"d/M/Y"}}</td>
-        <td>{{ report.datetime | date:"d/M/Y" }}</td>
-        <td><a href="{% url 'edit_report' villa_id=villa.id report_id=report.id %}"><button>Edit</button></a></td>
-        <td><a href="{% url 'edit_report' villa_id=villa.id report_id=report.id %}"><button>Delete</button></a></td>
-    </tr>
-{% endfor %}
-</table>
-
-<div class="pagination">
-    <span class="step-links">
-        {% if reports.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ reports.previous_page_number }}">previous</a>
-        {% endif %}
-
-        <span class="current">
+        <p class="current">
             Page {{ reports.number }} of {{ reports.paginator.num_pages }}.
-        </span>
-
-        {% if reports.has_next %}
-            <a href="?page={{ reports.next_page_number }}">next</a>
-            <a href="?page={{ reports.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
+        </p>
+        <div class="col-2"></div>
+    </div>
 </div>
+</body>
+</html>

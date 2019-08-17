@@ -1,0 +1,31 @@
+{% url 'index' as index_url %}
+{% url 'villas_list' as villas_list %}
+{% url 'stm_index' as stm %}
+{% url 'orders_table' as chk %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item {% if request.path == index_url %}active{% endif %}">
+                <a class="nav-link" href="{{ index_url }}">
+                    Home{% if request.path == index_url %}<span class="sr-only">(current)</span>{% endif %}
+                </a>
+            </li>
+            <li class="nav-item {% if request.path == villas_list %}active{% endif %}">
+                <a class="nav-link" href="{{ villas_list }}">
+                    Villa List{% if request.path == villas_list %}<span class="sr-only">(current)</span>{% endif %}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-outline-light" href="{{ stm }}">Storage Manager</a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-outline-light" href="{{ chk }}">Check-in Manager</a>
+            </li>
+        </ul>
+    </div>
+</nav>

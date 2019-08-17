@@ -1,24 +1,45 @@
-<form method="POST">
-    {% csrf_token %}
-    <label for="start_date">Date from</label>
-    <input type="date" id="start_date" name="start_date" value="{{start_date}}">
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    {% include 'includes.html' %}
+</head>
+<body>
+{% include 'service_manager/navbar.html' %}
+<div class="container">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="start_date">Date from</label>
+                    <input class="form-control" type="date" id="start_date" name="start_date" value="{{ start_date }}">
+                </div>
+                <div class="form-group">
+                    <label for="end_date">End date</label>
+                    <input class="form-control" type="date" id="end_date" name="end_date" value="{{ end_date }}">
+                </div>
+                <div class="form-group">
+                    <label for="income">Income</label>
+                    <input class="form-control" type="number" id="income" name="income"
+                           {% if report %}value="{{ report.income }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <label for="occupancy">Occupied Nights</label>
+                    <input class="form-control" type="number" id="occupancy" name="occupancy"
+                           value="{% if report %}{{ report.occupancy }}{% else %}0{% endif %}" min="0" max="31">
+                </div>
 
-    <label for="end_date">End date</label>
-    <input type="date" id="end_date" name="end_date" value="{{end_date}}">
-    {%if report%}
-        <label for="income">Income</label>
-        <input type="number" id="income" name="income" value="{{report.income}}">
-
-        <label for="occupancy">Occupied Nights</label>
-        <input type="number" id="occupancy" name="occupancy" value="{{report.occupancy}}" min="0" max="31">
-
-    {%else%}
-            <label for="income">Income</label>
-            <input type="text" id="income" name="income" >
-
-            <label for="occupancy">Occupied Nights</label>
-            <input type="number" id="occupancy" name="occupancy" value="0" min="0" max="31">
-    {%endif%}
-
-    <input type="submit" value="OK">
-</form>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,32 +1,80 @@
-<table>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-{% for villa in villas %}
-    <tr>
-        <td><a href="service_manager/{{ villa.id }}"> {{ villa.name }}</a></td>
-        <td><a href="{% url 'villa_expenses' villa.id %}"><button>spendings</button></a></td>
-        <td><a href="{% url 'villa_reports' villa.id %}"><button >reports</button></a></td>
-    </tr>
-{% endfor %}
-</table>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    {% include 'includes.html' %}
+</head>
+<body>
+{% include 'service_manager/navbar.html' %}
+<div class="container">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col">
+            <h1>Storage list</h1>
+            <table class="table-dark table table-hover">
+                <thead>
+                <tr>
+                    <td>Storage</td>
+                    <td>Expenses</td>
+                    <td>Report</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for villa in villas %}
+                    <tr onclick="document.location = '{% url 'villa_details' villa.id %}';">
+                        <td>{{ villa.name }}</td>
+                        <td>
+                            <a class="btn btn-success" href="{% url 'villa_expenses' villa.id %}">Expenses</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-warning" href="{% url 'villa_reports' villa.id %}">Reports</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
 
-<div class="pagination">
-    <span class="step-links">
-        {% if villas.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ villas.previous_page_number }}">previous</a>
-        {% endif %}
+            <nav aria-label="...">
+                <ul class="pagination">
+                    <li class="page-item {% if not villas.has_previous %}disabled{% endif %}">
+                        {% if villas.has_previous %}
+                            <a href="{% url 'villas_list' %}?page={{ villas.previous_page_number }}"
+                               class="page-link bg-dark text-white">Previous</a>
+                        {% else %}
+                            <span class="page-link bg-dark disabled">Previous</span>
+                        {% endif %}
+                    </li>
+                    {% for page in villas.paginator.page_range %}
+                        <li class="page-item {% if page == villas.number %}bg-white{% else %}bg-dark{% endif %}">
+                            {% if page != villas.number %}
+                                <a class="page-link bg-dark text-white"
+                                   href="{% url 'villas_list' %}?page={{ page }}">{{ page }}</a>
+                            {% else %}
+                                <span class="page-link bg-white text-dark">{{ page }}<span
+                                        class="sr-only">(current)</span></span>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                    <li class="page-item {% if not villas.has_next %}disabled{% endif %}">
+                        {% if villas.has_next %}
+                            <a class="bg-dark text-white page-link"
+                               href="{% url 'villas_list' %}?page={{ villas.next_page_number }}">Next</a>
+                        {% else %}
+                            <span class="page-link bg-dark disabled">Next</span>
+                        {% endif %}
+                    </li>
+                </ul>
+            </nav>
+            <p class="current">
+                Page {{ villas.number }} of {{ villas.paginator.num_pages }}.
+            </p>
+        </div>
+        <div class="col-2"></div>
+    </div>
 
-        <span class="current">
-            Page {{ villas.number }} of {{ villas.paginator.num_pages }}.
-        </span>
-
-        {% if villas.has_next %}
-            <a href="?page={{ villas.next_page_number }}">next</a>
-            <a href="?page={{ villas.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-</div>
+</body>
+</html>

@@ -17,12 +17,14 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
+from indussystem import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('service_manager/', include('service_manager.urls')),
     path('stm/', include('storage_manager.urls')),
-    path('check_in_manager/', include('check_in_manager.urls'))
+    path('check_in_manager/', include('check_in_manager.urls')),
+    path('', views.index, name='index')
 ]
 
 if settings.DEBUG:
