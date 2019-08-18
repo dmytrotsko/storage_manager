@@ -20,13 +20,9 @@
     <tr>
         <th scope="col">Order #</th>
         <th scope="col">Order Status</th>
-        <th scope="col">Source</th>
         <th scope="col">Check-in</th>
         <th scope="col">Check-out</th>
-        <th scope="col">Occupancy time</th>
         <th scope="col">Guest Name</th>
-        <th scope="col">Guest cell number</th>
-        <th scope="col">Guest e-mail</th>
         <th scope="col">Balance</th>
         <th scope="col">Price</th>
         <th scope="col">Inclusions</th>
@@ -49,9 +45,6 @@
                 {% endif %}
             </td>
             <td>
-                {{ order.order_source }}
-            </td>
-            <td>
                 {% if order.order_early_check_in_required %}
                     <span style="color: firebrick;">{{ order.order_guest_check_in_date }}</span>
                 {% else %}
@@ -65,20 +58,9 @@
                     {{ order.order_guest_check_out_date }}
                 {% endif %}
             </td>
-            <td>{{ order.order_guest_check_in_date|timesince:order.order_guest_check_out_date }}</td>
             <td>{{ order.order_guest_name }}</td>
-            <td>{{ order.order_guest_cell_number }}</td>
-            <td>{{ order.order_guest_email }}</td>
             <td>{{ order.order_guest_balance }}</td>
             <td>{{ order.order_price }}</td>
-            <td>
-                {% for inclusion in order.order_inclusions.all %}
-                    {{ inclusion.inclusion_text }}
-                {% endfor %}
-            </td>
-            <td>
-                {{ order.order_notes }}
-            </td>
         </tr>
     {% endfor %}
     </tbody>

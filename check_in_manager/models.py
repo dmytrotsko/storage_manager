@@ -58,19 +58,23 @@ class Order(models.Model):
     order_number_of_kids = models.PositiveIntegerField(null=True, blank=True)
     order_source = models.ForeignKey(Source, on_delete=models.CASCADE, null=True, blank=True)
     order_spec_occasion = models.ForeignKey(SpecOccasion, on_delete=models.CASCADE, null=True, blank=True)
-    order_waiting_for_manager = models.NullBooleanField(null=True, blank=True)
-    order_accepted = models.NullBooleanField(null=True, blank=True)
-    order_accepted_by_guest = models.NullBooleanField(null=True, blank=True)
-    order_declined_by_guest = models.NullBooleanField(null=True, blank=True)
     order_offer = models.ForeignKey(Offer, null=True, blank=True, on_delete=models.CASCADE)
-    order_decline_reason = models.CharField(max_length=255, null=True, blank=True)
-    order_chosen_villa = models.ForeignKey(Villa, on_delete=models.CASCADE)
     order_guest_balance = models.IntegerField(null=True, blank=True)
     order_price = models.IntegerField(null=True, blank=True)
-    order_alerted = models.NullBooleanField(default=False, null=True, blank=True)
     order_comment = models.TextField(blank=True, null=True)
     order_notes = models.TextField(null=True, blank=True)
     order_inclusions = models.ManyToManyField(Inclusion)
+
+    order_waiting_client_to_accept_offer = models.NullBooleanField(null=True, blank=True)
+    order_client_accepted_offer = models.NullBooleanField(null=True, blank=True)
+    order_chosen_villa = models.ForeignKey(Villa, on_delete=models.CASCADE)
+    order_accepted = models.NullBooleanField(null=True, blank=True)
+    order_waiting_for_manager = models.NullBooleanField(null=True, blank=True)
+
+    order_accepted_by_guest = models.NullBooleanField(null=True, blank=True)
+
+    order_declined_by_guest = models.NullBooleanField(null=True, blank=True)
+    order_decline_reason = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return str(self.pk)

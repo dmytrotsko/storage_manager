@@ -6,7 +6,6 @@ from .models import (
     Offer,
     Inclusion,
     Order,
-    # Call
 )
 
 
@@ -57,21 +56,7 @@ admin.site.register(Inclusion, InclusionAdmin)
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = (
-        'order_creator', 'order_guest_name',
-        'order_guest_cell_number', 'order_guest_email',
-        'order_guest_whatsapp', 'order_guest_check_in_date',
-        'order_guest_check_out_date', 'order_early_check_in_required',
-        'order_late_check_out_required', 'order_number_of_adults',
-        'order_number_of_kids', 'order_source',
-        'order_spec_occasion', 'order_waiting_for_manager',
-        'order_accepted', 'order_accepted_by_guest',
-        'order_declined_by_guest', 'order_offer',
-        'order_decline_reason', 'order_chosen_villa',
-        'order_guest_balance', 'order_price',
-        'order_alerted', 'order_comment',
-        'order_notes',
-    )
+    list_display = [field.name for field in Order._meta.get_fields() if field.name != 'order_inclusions']
     search_fields = (
         'order_creator', 'order_guest_name',
         'order_guest_cell_number', 'order_guest_email',
@@ -80,16 +65,3 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Order, OrderAdmin)
-
-
-# class CallAdmin(admin.ModelAdmin):
-#     list_display = (
-#         'call_date', 'call_message',
-#         'call_order',
-#     )
-#     search_fields = (
-#         'call_date',
-#     )
-#
-#
-# admin.site.register(Call, CallAdmin)
