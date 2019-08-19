@@ -10,3 +10,7 @@ def item_count(order_id):
     if offers:
         return True
     return False
+
+@register.filter(name='addcss')
+def addcss(field, css):
+    return field.as_widget(attrs={"class": css})

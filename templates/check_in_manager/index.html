@@ -4,80 +4,92 @@
 <head>
     <meta charset="UTF-8">
     <title>Check-in Manager</title>
+    {% include 'includes.html' %}
 </head>
 <body>
-<form method="POST">
-    {% csrf_token %}
-    <div>
-        <label for="from_date">From:</label>
-        <input type="date" id="from_date" name="from_date">
-        <label for="to_date">To:</label>
-        <input type="date" id="to_date" name="to_date">
-        <input type="submit">
-    </div>
-</form>
-<table>
-    <thead>
-    <tr>
-        <th scope="col">Order #</th>
-        <th scope="col">Order Status</th>
-        <th scope="col">Check-in</th>
-        <th scope="col">Check-out</th>
-        <th scope="col">Guest Name</th>
-        <th scope="col">Balance</th>
-        <th scope="col">Price</th>
-        <th scope="col">Inclusions</th>
-        <th scope="col">Notes</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for order in orders %}
-        <tr>
-            <td>
-                <a href="{% url 'order_details' order.id %}">{{ order.id }}</a>
-            </td>
-            <td>
-                {% if order.order_waiting_for_manager %}
-                    <span style="color: #505050;">In Process</span>
-                {% elif order.order_accepted_by_guest %}
-                    <span style="color: green;">Accepted by guest</span>
-                {% elif order.order_declined_by_guest %}
-                    <span style="color: red;">Declined. Reason: {{ order.order_decline_reason }}</span>
-                {% endif %}
-            </td>
-            <td>
-                {% if order.order_early_check_in_required %}
-                    <span style="color: firebrick;">{{ order.order_guest_check_in_date }}</span>
-                {% else %}
-                    {{ order.order_guest_check_in_date }}
-                {% endif %}
-            </td>
-            <td>
-                {% if order.order_late_check_out_required %}
-                    <span style="color: blue;">{{ order.order_guest_check_out_date }}</span>
-                {% else %}
-                    {{ order.order_guest_check_out_date }}
-                {% endif %}
-            </td>
-            <td>{{ order.order_guest_name }}</td>
-            <td>{{ order.order_guest_balance }}</td>
-            <td>{{ order.order_price }}</td>
-            <td>
-                {% for inclusion in order.order_inclusions.all %}
-                    {{ inclusion.inclusion_text }}
+<div class="container">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="from_date">From:</label>
+                    <input class="form-control" type="date" id="from_date" name="from_date">
+                </div>
+                <div class="form-group">
+                    <label for="to_date">To:</label>
+                    <input class="form-control" type="date" id="to_date" name="to_date">
+                </div>
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </form>
+            <br>
+            <table class="table table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">Order #</th>
+                    <th scope="col">Order Status</th>
+                    <th scope="col">Check-in</th>
+                    <th scope="col">Check-out</th>
+                    <th scope="col">Guest Name</th>
+                    <th scope="col">Balance</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Inclusions</th>
+                    <th scope="col">Notes</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'order_details' order.id %}">{{ order.id }}</a>
+                        </td>
+                        <td>
+                            {% if order.order_waiting_for_manager %}
+                                <span style="color: #505050;">In Process</span>
+                            {% elif order.order_accepted_by_guest %}
+                                <span style="color: green;">Accepted by guest</span>
+                            {% elif order.order_declined_by_guest %}
+                                <span style="color: red;">Declined. Reason: {{ order.order_decline_reason }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if order.order_early_check_in_required %}
+                                <span style="color: firebrick;">{{ order.order_guest_check_in_date }}</span>
+                            {% else %}
+                                {{ order.order_guest_check_in_date }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if order.order_late_check_out_required %}
+                                <span style="color: blue;">{{ order.order_guest_check_out_date }}</span>
+                            {% else %}
+                                {{ order.order_guest_check_out_date }}
+                            {% endif %}
+                        </td>
+                        <td>{{ order.order_guest_name }}</td>
+                        <td>{{ order.order_guest_balance }}</td>
+                        <td>{{ order.order_price }}</td>
+                        <td>
+                            {% for inclusion in order.order_inclusions.all %}
+                                {{ inclusion.inclusion_text }}
+                            {% endfor %}
+                        </td>
+                        <td>{{ order.order_notes }}</td>
+                        <td>
+                            {% if order.id|check_if_order_has_offers %}
+                                <a href="{% url 'send_offers' order.id %}">Send offers</a>
+                            {% else %}
+                                <a href="{% url 'create_offers' order.id %}">Create offers</a>
+                            {% endif %}
+                        </td>
+                    </tr>
                 {% endfor %}
-            </td>
-            <td>{{ order.order_notes }}</td>
-            <td>
-                {% if order.id|check_if_order_has_offers %}
-                    <a href="{% url 'send_offers' order.id %}">Send offers</a>
-                {% else %}
-                    <a href="{% url 'create_offers' order.id %}">Create offers</a>
-                {% endif %}
-            </td>             
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
 </body>
 </html>

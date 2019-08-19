@@ -3,8 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Create new order</title>
+    {% include 'includes.html' %}
 </head>
 <body>
-    {% include 'check_in_manager/includes/order_form_snippet.html' %}
+<div class="container">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col">
+            <h1>Create Order</h1>
+            <hr>
+            {% include 'check_in_manager/includes/order_form_snippet.html' %}
+            <br>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
 </body>
 </html>
