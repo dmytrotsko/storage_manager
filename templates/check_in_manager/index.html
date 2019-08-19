@@ -33,7 +33,7 @@
     {% for order in orders %}
         <tr>
             <td>
-                <a href={% url 'order_details' order.id %}>{{ order.id }}</a>
+                <a href="{% url 'order_details' order.id %}">{{ order.id }}</a>
             </td>
             <td>
                 {% if order.order_waiting_for_manager %}
@@ -61,6 +61,19 @@
             <td>{{ order.order_guest_name }}</td>
             <td>{{ order.order_guest_balance }}</td>
             <td>{{ order.order_price }}</td>
+            <td>
+                {% for inclusion in order.order_inclusions.all %}
+                    {{ inclusion.inclusion_text }}
+                {% endfor %}
+            </td>
+            <td>{{ order.order_notes }}</td>
+            <td>
+                {% if order|offers_exists %}
+                    <a href="{% url 'send_offers' order.id %}">Send offers</a>
+                {% else %}
+                    <a href="{% url 'create_offers' order.id %}">Create offers</a>
+                {% endif %}
+            </td>             
         </tr>
     {% endfor %}
     </tbody>

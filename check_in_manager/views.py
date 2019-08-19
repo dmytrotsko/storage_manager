@@ -1,24 +1,28 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
-from .forms import OrderForm
+from .forms import OrderForm, OfferForm
 from .models import *
 
 
 def index(request):
     if request.user.is_superuser:
         orders = reversed(Order.objects.all())
+        orders_ids = [order.id for order in Order.objects.all()]
+        offers = Offer.objects.filter(offer_order_id__in=[order_id for order_id in orders_ids])
     else:
         orders = reversed(Order.objects.filter(order_creator=request.user.id))
+        offers = Offer.objects.filter(offer_order_id__in=[order_id for order_id in orders_ids])
     ctx = {
         'orders': orders,
+        'offers': offers
     }
     if request.method == 'POST':
         if request.POST.get('from_date') and request.POST.get('to_date'):
             orders = Order.objects.filter(
                 order_guest_check_in_date__range=(request.POST.get('from_date'), request.POST.get('to_date')))
             ctx['orders'] = orders
-    return render(request, "index.html", ctx)
+    return render(request, "check_in_manager/index.html", ctx)
 
 
 def order_details(request, order_id):
@@ -26,7 +30,7 @@ def order_details(request, order_id):
     ctx = {
         'order': order,
     }
-    return render(request, 'order_details.html', ctx)
+    return render(request, 'check_in_manager/order_details.html', ctx)
 
 
 def edit_order(request, order_id):
@@ -43,7 +47,7 @@ def edit_order(request, order_id):
         'order': order,
         'form': form
     }
-    return render(request, 'edit_order.html', ctx)
+    return render(request, 'check_in_manager/edit_order.html', ctx)
 
 
 def create_order(request):
@@ -60,4 +64,29 @@ def create_order(request):
     ctx = {
         'form': form
     }
-    return render(request, 'create_order.html', ctx)
+    return render(request, 'check_in_manager/create_order.html', ctx)
+
+
+def create_offers(request, order_id):
+    # TODO: Add adding multiple offers on one page
+    if request.method == 'POST':
+        form = OfferForm(data=request.POST)
+        if form.is_valid():
+            new_offer = form.save(commit=False)
+            new_offer.offer_order_id = order_id
+            new_offer.save()
+            return HttpResponseRedirect("/check_in_manager/orders_table/order/{}/details/".format(order_id))
+    else:
+        form = OfferForm()
+    ctx = {
+        'form': form
+    }
+    return render(request, 'check_in_manager/create_offers.html', ctx)
+
+
+def send_offers(request, order_id):
+    offers = Offer.objects.filter(offer_order_id=order_id)
+    for offer in offers:
+        print(offer)
+    return
+

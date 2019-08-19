@@ -56,3 +56,4 @@ class OfferForm(forms.ModelForm):
     class Meta:
         model = Offer
         fields = '__all__'
+        exclude = ('offer_order_id',)

@@ -26,6 +26,7 @@ class Offer(models.Model):
     offer_villa = models.ForeignKey(Villa, on_delete=models.CASCADE)
     offer_price_per_night = models.IntegerField()
     offer_tax = models.IntegerField()
+    offer_order_id = models.CharField(null=True, blank=True, max_length=255)
 
     def __str__(self):
         return str(self.id)
@@ -67,7 +68,7 @@ class Order(models.Model):
 
     order_waiting_client_to_accept_offer = models.NullBooleanField(null=True, blank=True)
     order_client_accepted_offer = models.NullBooleanField(null=True, blank=True)
-    order_chosen_villa = models.ForeignKey(Villa, on_delete=models.CASCADE)
+    order_chosen_villa = models.ForeignKey(Villa, on_delete=models.CASCADE, null=True, blank=True)
     order_accepted = models.NullBooleanField(null=True, blank=True)
     order_waiting_for_manager = models.NullBooleanField(null=True, blank=True)
 
