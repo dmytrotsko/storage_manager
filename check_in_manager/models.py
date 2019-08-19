@@ -64,7 +64,7 @@ class Order(models.Model):
     order_price = models.IntegerField(null=True, blank=True)
     order_comment = models.TextField(blank=True, null=True)
     order_notes = models.TextField(null=True, blank=True)
-    order_inclusions = models.ManyToManyField(Inclusion)
+    order_inclusions = models.ManyToManyField(Inclusion, null=True, blank=True)
 
     order_waiting_client_to_accept_offer = models.NullBooleanField(null=True, blank=True)
     order_client_accepted_offer = models.NullBooleanField(null=True, blank=True)

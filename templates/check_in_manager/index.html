@@ -1,3 +1,4 @@
+{% load check_in_manager_templatetags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,7 +69,7 @@
             </td>
             <td>{{ order.order_notes }}</td>
             <td>
-                {% if order|offers_exists %}
+                {% if order.id|check_if_order_has_offers %}
                     <a href="{% url 'send_offers' order.id %}">Send offers</a>
                 {% else %}
                     <a href="{% url 'create_offers' order.id %}">Create offers</a>
