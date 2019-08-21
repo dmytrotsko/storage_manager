@@ -16,9 +16,11 @@ class OrderForm(forms.ModelForm):
             'order_creator', 'order_waiting_client_to_accept_offer', 'order_client_accepted_offer', 'order_accepted',
             'order_waiting_for_manager', 'order_accepted_by_guest', 'order_declined_by_guest', 'order_decline_reason')
         widgets = {
-            'order_guest_check_in_date': forms.TextInput(attrs={'type': 'date'}),
-            'order_guest_check_out_date': forms.TextInput(attrs={'type': 'date'}),
-            'order_inclusions': forms.CheckboxSelectMultiple()
+            'order_guest_check_in_date': forms.TextInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'order_guest_check_out_date': forms.TextInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'order_inclusions': forms.SelectMultiple(),
+            'order_guest_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'order_guest_cell_number': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 

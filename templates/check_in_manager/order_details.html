@@ -3,41 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <title>Order #{{ order.id }} Details</title>
+    {% include 'includes.html' %}
 </head>
 <body>
-{% if should_be_alerted %}
-    <form method="POST">
-        <h3>This guest will arrive tomorrow.Please don't forget to contact him</h3>
-        {% csrf_token %}
-        <button type="submit" id="alert_done" name="alert_done">Done</button>
-    </form>
-{% endif %}
-Order #{{ order.id }} created by {{ order.order_creator }}
-<a href="{% url 'edit_order' order.id %}">Edit order</a>
-{% if order.order_waiting_for_manager %}
-    In Process
-{% elif order.order_accepted_by_client %}
-    Chosen villa: {{ order.order_chosen_villa }}
-{% elif order.order_declined_by_client %}
-    Declined. Reason: {{ order.order_decline_reason }}
-{% endif %}
-Guest name: {{ order.order_guest_name }}
-Guest cell number: {{ order.order_guest_cell_number }}
-Guest e-mail: {{ order.order_guest_email }}
-Guest WhatsApp: {{ order.order_guest_whatsapp }}
-Check-in date: {{ order.order_guest_check_in_date }} {# TODO: add color if early check_in required #}
-Check-out date: {{ order.guest_check_out_date }} {# TODO: add color if late check_out required #}
-Number of adults: {{ order.order_number_of_adults }}
-Number of kids: {{ order.order_number_of_kids }}
-Occupancy time: <strong>{{ order.order_guest_check_in_date|timesince:order.order_guest_check_out_date }} </strong>
-Guest balance: {{ order.order_guest_balance }}
-Order price: {{ order.order_price }}
-Inclusions:
-{% for inclusion in order.order_inclusions.all %}
-    {{ inclusion.inclusion_text }}
-{% endfor %}
-Notes: {{ order.order_notes }}
-Comment: {{ order.order_comment }}
+<div class="container">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col">
+            {% if should_be_alerted %}
+                <form method="POST">
+                    <h3>This guest will arrive tomorrow.Please don't forget to contact him</h3>
+                    {% csrf_token %}
+                    <button type="submit" id="alert_done" name="alert_done">Done</button>
+                </form>
+            {% endif %}
+            <h1>Order #{{ order.id }}</h1><a class="btn btn-primary" href="{% url 'edit_order' order.id %}">Edit order</a>
+            <h5>Created by {{ order.order_creator }}</h5>
+            <hr>
+            <h3>Status:
+                {% if order.order_waiting_for_manager %}
+                    In Process
+                {% elif order.order_accepted_by_client %}
+                    Chosen villa: {{ order.order_chosen_villa }}
+                {% elif order.order_declined_by_client %}
+                    Declined. Reason: {{ order.order_decline_reason }}
+                {% endif %}</h3>
+            <ul class="list-group">
+                <li class="list-group-item">Guest name: {{ order.order_guest_name }}</li>
+                <li class="list-group-item">Guest cell number: {{ order.order_guest_cell_number }}</li>
+                <li class="list-group-item">Guest e-mail: {{ order.order_guest_email }}</li>
+                <li class="list-group-item">Guest WhatsApp: {{ order.order_guest_whatsapp }}</li>
+                <li class="list-group-item">Check-in date: {{ order.order_guest_check_in_date }}
+                    {% if order.order_early_check_in_required %}
+                        <strong class="text-warning">Early Check-In required</strong>
+                    {% endif %}
+                </li>
+                {# TODO: add color if early check_in required #}
+                <li class="list-group-item">Check-out date: {{ order.order_guest_check_out_date }}
+                    {% if order.order_late_check_out_required %}
+                        <strong class="text-warning">Late Check-Out required</strong>
+                    {% endif %}
+                </li>
+                {# TODO: add color if late check_out required #}
+                <li class="list-group-item">Number of adults: {{ order.order_number_of_adults }}</li>
+                <li class="list-group-item">Number of kids: {{ order.order_number_of_kids }}</li>
+                <li class="list-group-item">Occupancy time:
+                    <strong>{{ order.order_guest_check_in_date|timesince:order.order_guest_check_out_date }} </strong>
+                </li>
+                <li class="list-group-item">Guest balance: {{ order.order_guest_balance }}</li>
+                <li class="list-group-item">Order price: {{ order.order_price }}</li>
+                <li class="list-group-item">Inclusions:
+                    <ul>
+                        {% for inclusion in order.order_inclusions.all %}
+                            <li>{{ inclusion.inclusion_text }}</li>
+                        {% empty %}
+                            <li>None</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li class="list-group-item">Notes: {% firstof order.order_notes 'None' %}</li>
+                <li class="list-group-item">Comment: {% firstof order.order_comment 'None' %}</li>
+            </ul>
+
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
 
 </body>
 </html>
