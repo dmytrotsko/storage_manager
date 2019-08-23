@@ -7,5 +7,7 @@ urlpatterns = [
     path('villa_details/<id>/', villa_details, name='villa_details'),
     path('create_item/', create_item, name='create_item'),
     path('ajax_search', ajax_search, name='ajax_search'),
+    path('ajax_reports', ajax_reports, name='ajax_reports'),
+    path('reports', reports, name='reports')
     # path("<int:pk>/expenses", villa_expenses, name='villa_expenses'),
 ]

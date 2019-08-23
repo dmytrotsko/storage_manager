@@ -9,11 +9,11 @@ def index(request):
     if request.user.is_superuser:
         orders = reversed(Order.objects.all())
         orders_ids = [order.id for order in Order.objects.all()]
-        offers = Offer.objects.filter(offer_order_id__in=[order_id for order_id in orders_ids])
     else:
         orders = reversed(Order.objects.filter(order_creator=request.user.id))
         orders_ids = [order.id for order in Order.objects.filter(order_creator=request.user.id)]
-        offers = Offer.objects.filter(offer_order_id__in=[order_id for order_id in orders_ids])
+
+    offers = Offer.objects.filter(offer_order_id__in=[order_id for order_id in orders_ids])
     ctx = {
         'orders': orders,
         'offers': offers

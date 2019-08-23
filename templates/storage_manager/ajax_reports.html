@@ -1,0 +1,36 @@
+{% load mathfilters %}
+<table class="table table-dark">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Type</th>
+        <th>Item Name</th>
+        <th>Date</th>
+        <th>Type</th>
+        <th>Quantity</th>
+        <th>Price/item</th>
+        <th>Total Price</th>
+        <th>From</th>
+        <th>To</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for report in reports %}
+        <tr class="{% if report.type == 'DL' %}bg-danger
+                                {% elif report.type == 'CR' %}bg-success
+                                {% else %}bg-warning
+                                {% endif %}">
+            <td>{{ forloop.counter }}</td>
+            <td>{{ report.get_type_display }}</td>
+            <td>{{ report.item_name }}</td>
+            <td>{{ report.date }}</td>
+            <td>{{ report.get_type_display }}</td>
+            <td>{{ report.quantity }}</td>
+            <td>{{ report.price_per_item }}</td>
+            <td>{{ report.price_per_item|mul:report.quantity }}</td>
+            <td>{{ report.storage_from.name }}</td>
+            <td>{{ report.storage_to.name }}</td>
+        <tr></tr>
+    {% endfor %}
+    </tbody>
+</table>

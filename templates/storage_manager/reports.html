@@ -1,0 +1,50 @@
+{% load mathfilters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>(STM)Reports</title>
+    {% include 'includes.html' %}
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Reports</h1>
+            <div class="form-group">
+                <label for="search">Search:</label>
+                <input class="form-control" type="text" id="search" name="search" oninput="showSearch()">
+            </div>
+            <div class="form-group">
+                <label for="report_type">Report type:</label>
+                <select class="form-control" name="report_type" id="report_type" oninput="showSearch()">
+                    <option value="any">Any</option>
+                    <option value="transition">Transition</option>
+                    <option value="creation">Creation</option>
+                    <option value="deletion">Deletion</option>
+                </select>
+            </div>
+            <small>Hint:</small>
+            <div id="search_result"></div>
+
+        </div>
+    </div>
+</div>
+<script>
+    function showSearch() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("search_result").innerHTML = this.responseText;
+            }
+        };
+        q = document.getElementById('search').value;
+        r = document.getElementById('report_type').value
+        xhttp.open("GET", "/stm/ajax_reports?q=" + q + '&report_type=' + r, true);
+        xhttp.send();
+    }
+
+    showSearch()
+</script>
+</body>
+</html>

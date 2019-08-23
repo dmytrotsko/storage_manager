@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'check_in_manager',
     'storage_manager',
     'indussystem',
+    'mathfilters'
 ]
 
 MIDDLEWARE = [
