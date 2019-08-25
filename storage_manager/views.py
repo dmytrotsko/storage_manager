@@ -35,7 +35,7 @@ def villa_details(request, id):
         if request.POST.get('itemTransfer') == '':
             # Transfer item
             item_name = request.POST['item_name_to_transfer']
-            price = Item.objects.get(name=item_name, storage_id=id)
+            price = Item.objects.get(name=item_name, storage_id=id).price
             quantity = int(request.POST['quantity'])
             target_storage_id = request.POST['target_storage']
 
@@ -65,7 +65,7 @@ def villa_details(request, id):
             Transaction.objects.create(item_name=item_name,
                                        quantity=quantity,
                                        price_per_item=price,
-                                       user=request.user.id,
+                                       user=request.user,
                                        type='TR',
                                        storage_from_id=id,
                                        storage_to_id=target_storage_id)
@@ -154,9 +154,11 @@ def ajax_search(request):
 
 def reports(request):
     reports = Transaction.objects.all()
+    storages = Villa.objects.all()
 
     ctx = {
         'reports': reports,
+        'storages': storages,
     }
 
     return render(request, 'storage_manager/reports.html', ctx)
@@ -179,6 +181,22 @@ def ajax_reports(request):
         else:
             ...
 
-        ctx = {'reports': reports}
+    if request.GET['from'] != 'any':
+        try:
+            st = Villa.objects.get(name=request.GET['from'])
+            reports = reports.filter(storage_from=st)
+        except ObjectDoesNotExist:
+            ...
+
+    if request.GET['to'] != 'any':
+        try:
+            st = Villa.objects.get(name=request.GET['to'])
+            reports = reports.filter(storage_from=st)
+        except ObjectDoesNotExist:
+            ...
+
+    reports = reports.order_by('-date')
+
+    ctx = {'reports': reports}
 
     return render(request, 'storage_manager/ajax_reports.html', ctx)

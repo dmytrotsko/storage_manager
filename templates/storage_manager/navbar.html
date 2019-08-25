@@ -4,6 +4,7 @@
 {% url 'villa_list' as villa_list %}
 {% url 'villas_list' as srv %}
 {% url 'orders_table' as chk %}
+{% url 'reports' as reports %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Navbar</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -30,6 +31,11 @@
             <li class="nav-item {% if request.path == create_item %}active{% endif %}">
                 <a class="nav-link" href="{{ create_item }}">
                     Create Item{% if request.path == create_item %}<span class="sr-only">(current)</span>{% endif %}
+                </a>
+            </li>
+            <li class="nav-item {% if request.path == reports %}active{% endif %}">
+                <a class="nav-link" href="{{ reports }}">
+                    Reports{% if request.path == reports %}<span class="sr-only">(current)</span>{% endif %}
                 </a>
             </li>
             <li class="nav-item">

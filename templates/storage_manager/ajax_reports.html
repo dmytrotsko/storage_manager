@@ -12,16 +12,17 @@
         <th>Total Price</th>
         <th>From</th>
         <th>To</th>
+        <th>User</th>
     </tr>
     </thead>
     <tbody>
     {% for report in reports %}
-        <tr class="{% if report.type == 'DL' %}bg-danger
-                                {% elif report.type == 'CR' %}bg-success
-                                {% else %}bg-warning
-                                {% endif %}">
+        <tr>
             <td>{{ forloop.counter }}</td>
-            <td>{{ report.get_type_display }}</td>
+            <td class="{% if report.type == 'DL' %}text-danger
+                                {% elif report.type == 'CR' %}text-success
+                                {% else %}text-warning
+                                {% endif %}">{{ report.get_type_display }}</td>
             <td>{{ report.item_name }}</td>
             <td>{{ report.date }}</td>
             <td>{{ report.get_type_display }}</td>
@@ -30,6 +31,7 @@
             <td>{{ report.price_per_item|mul:report.quantity }}</td>
             <td>{{ report.storage_from.name }}</td>
             <td>{{ report.storage_to.name }}</td>
+            <td>{{ report.user.username }}</td>
         <tr></tr>
     {% endfor %}
     </tbody>

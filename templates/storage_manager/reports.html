@@ -7,6 +7,7 @@
     {% include 'includes.html' %}
 </head>
 <body>
+{% include 'storage_manager/navbar.html' %}
 <div class="container">
     <div class="row">
         <div class="col">
@@ -24,9 +25,26 @@
                     <option value="deletion">Deletion</option>
                 </select>
             </div>
+            <div class="form-group">
+                <label for="storage_from">From Storage:</label>
+                <select class="form-control" name="storage_from" id="storage_from" oninput="showSearch()">
+                    <option value="any">-------</option>
+                    {% for storage in storages %}
+                        <option value="{{ storage.name }}">{{ storage.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="storage_to">To Storage:</label>
+                <select class="form-control" name="storage_to" id="storage_to" oninput="showSearch()">
+                    <option value="any">-------</option>
+                    {% for storage in storages %}
+                        <option value="{{ storage.name }}">{{ storage.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
             <small>Hint:</small>
             <div id="search_result"></div>
-
         </div>
     </div>
 </div>
@@ -39,8 +57,10 @@
             }
         };
         q = document.getElementById('search').value;
-        r = document.getElementById('report_type').value
-        xhttp.open("GET", "/stm/ajax_reports?q=" + q + '&report_type=' + r, true);
+        r = document.getElementById('report_type').value;
+        fr = document.getElementById('storage_from').value;
+        to = document.getElementById('storage_to').value;
+        xhttp.open("GET", "/stm/ajax_reports?q=" + q + '&report_type=' + r + '&from=' + fr + '&to=' + to, true);
         xhttp.send();
     }
 
