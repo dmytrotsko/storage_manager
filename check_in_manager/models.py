@@ -63,17 +63,24 @@ class Order(models.Model):
     order_price = models.IntegerField(null=True, blank=True)
     order_comment = models.TextField(blank=True, null=True)
     order_notes = models.TextField(null=True, blank=True)
-    order_inclusions = models.ManyToManyField(Inclusion, null=True, blank=True)
+    order_inclusions = models.ManyToManyField(Inclusion, blank=True)
 
-    order_waiting_client_to_accept_offer = models.NullBooleanField(null=True, blank=True)
-    order_client_accepted_offer = models.NullBooleanField(null=True, blank=True)
+    ORDER_STATUS_CHOICES = [
+        ('waiting_to_send_offer', 'Client is waiting for offers.'),
+        ('waiting_for_client_to_accept_offer', 'Waiting for client to accept offer.'),
+        ('client_accepted_offer', 'Client accepted the offer.'),
+        ('order_accepted', 'Order is accepted.'),
+        ('order_waiting_for_manager', 'Order is waiting manager to to some stuff.'),
+        ('order_accepted_by_guest', 'Client completely accepted the order.'),
+        ('order_declined_by_guest', 'Client declined the order due to some reason')
+    ]
+    order_status = models.CharField(
+        max_length=50,
+        choices=ORDER_STATUS_CHOICES,
+        default='waiting_to_send_offer'
+    )
+
     order_chosen_villa = models.ForeignKey(Villa, on_delete=models.CASCADE, null=True, blank=True)
-    order_accepted = models.NullBooleanField(null=True, blank=True)
-    order_waiting_for_manager = models.NullBooleanField(null=True, blank=True)
-
-    order_accepted_by_guest = models.NullBooleanField(null=True, blank=True)
-
-    order_declined_by_guest = models.NullBooleanField(null=True, blank=True)
     order_decline_reason = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
