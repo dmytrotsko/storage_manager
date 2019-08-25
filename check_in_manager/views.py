@@ -53,6 +53,7 @@ def edit_order(request, order_id):
 
 def create_order(request):
     # TODO: Add possibility to create Inclusion, SpecOccasion, Source while creating Order
+    source = Source.objects.all()
     if request.method == 'POST':
         form = OrderForm(data=request.POST)
         if form.is_valid():

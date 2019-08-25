@@ -1,9 +1,14 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Create new order</title>
     {% include 'includes.html' %}
+    <script src="{% static 'staticfiles/admin/js/core.js' %}"></script>
+    <script src="{% static 'staticfiles/admin/js/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'staticfiles/admin/js/jquery.init.js' %}"></script>
+    <script src="{% static 'staticfiles/admin/js/admin/RelatedObjectLookups.js' %}"></script>
 </head>
 <body>
 <div class="container">
@@ -18,5 +23,6 @@
         <div class="col-2"></div>
     </div>
 </div>
+
 </body>
 </html>

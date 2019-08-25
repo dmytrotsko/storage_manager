@@ -8,6 +8,8 @@ from .models import (
     Order,
 )
 
+from .forms import OrderForm
+
 
 class SourceAdmin(admin.ModelAdmin):
     list_display = (
@@ -56,7 +58,14 @@ admin.site.register(Inclusion, InclusionAdmin)
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in Order._meta.get_fields() if field.name != 'order_inclusions']
+    form = OrderForm
+
+    def __init__(self, model, admin_site):
+        super(OrderAdmin, self).__init__(model, admin_site)
+        self.form.admin_site = admin_site
+
+    list_display = [field.name for field in Order._meta.get_fields(
+    ) if field.name != 'order_inclusions']
     search_fields = (
         'order_creator', 'order_guest_name',
         'order_guest_cell_number', 'order_guest_email',

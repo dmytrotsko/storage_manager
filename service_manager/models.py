@@ -16,7 +16,7 @@ class ServiceType(models.Model):
 class Service(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     villa = models.ForeignKey(Villa, related_name='service_villa', null=True, blank=True, on_delete=models.CASCADE)
-    price = models.FloatField(default=0)
+    price = models.FloatField(default=0, null=True, blank=True)
     type = models.ForeignKey(ServiceType, related_name='type', null=True, blank=True, on_delete=models.CASCADE)
 
     class Meta:
