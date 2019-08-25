@@ -43,15 +43,7 @@
             {% for order in orders %}
                 <tr style="cursor:pointer;" onclick="document.location = '{% url 'order_details' order.id %}';">
                     <td>{{ order.id }}</td>
-                    <td>
-                        {% if order.order_waiting_for_manager %}
-                            <span class="text-warning">In Process</span>
-                        {% elif order.order_accepted_by_guest %}
-                            <span class="text-success">Accepted by guest</span>
-                        {% elif order.order_declined_by_guest %}
-                            <span class="text-danger">Declined. Reason: {{ order.order_decline_reason }}</span>
-                        {% endif %}
-                    </td>
+                    <td>{{ order.get_order_status_display }}</td>
                     <td>{{ order.order_guest_check_in_date }}
                         {% if order.order_early_check_in_required %}
                             <span class="text-warning">(Early)</span>
