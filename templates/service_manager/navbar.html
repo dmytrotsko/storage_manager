@@ -27,5 +27,9 @@
                 <a class="btn btn-outline-light" href="{{ chk }}">Check-in Manager</a>
             </li>
         </ul>
+
     </div>
+    <a class="nav-link" style="color: white">User: {{ user.username }}</a>
+    <a class="btn btn-outline-light" href="{% url 'logout' %}">Logout</a>
+
 </nav>
