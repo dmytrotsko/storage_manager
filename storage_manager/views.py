@@ -118,17 +118,21 @@ def create_item(request):
 
     if request.method == 'POST':
         item_name = request.POST['item_name']
-        item_storage_id = request.POST['item_storage']
+        # item_storage_id = request.POST['item_storage']
         item_quantity = int(request.POST['item_quantity'])
+        price = float(request.POST['item_price'])
 
         try:
-            item = Item.objects.get(name=item_name, storage=Villa.objects.get(pk=item_storage_id))
-            item.quantity += item_quantity
+            item = Item.objects.get(name=item_name,
+                                    storage=Villa.objects.get(pk=1),
+                                    price=price)
+            item.quantity += item_quantity,
             item.save()
         except ObjectDoesNotExist:
             Item.objects.create(name=item_name,
-                                storage=Villa.objects.get(pk=item_storage_id),
-                                quantity=item_quantity)
+                                storage=Villa.objects.get(pk=1),
+                                quantity=item_quantity,
+                                price=price)
 
         return redirect(add_parameters(request, item=item_name))
 

@@ -27,22 +27,34 @@
                 </div>
                 <div class="form-group">
                     <label for="item_quantity">Quantity</label>
-                    <input class="form-control" type="number" min="1" step="1" name="item_quantity" id="item_quantity">
+                    <input oninput="getPrice()" value="0" class="form-control" type="number" min="1" step="1" name="item_quantity" id="item_quantity">
                 </div>
                 <div class="form-group">
-                    <label for="item_storage">Villa</label>
-                    <select class="form-control" name="item_storage" id="item_storage">
-                        {% for v in villas %}
-                            <option value="{{ v.id }}">{{ v.name }}</option>
-                        {% endfor %}
-                    </select>
+                    <label for="item_price">Price:</label>
+                    <input oninput="getPrice()" value="0" class="form-control" type="number" min="0" name="item_price" id="item_price">
                 </div>
+{#                <div class="form-group">#}
+{#                    <label for="item_storage">Villa</label>#}
+{#                    <select class="form-control" name="item_storage" id="item_storage">#}
+{#                        {% for v in villas %}#}
+{#                            <option value="{{ v.id }}">{{ v.name }}</option>#}
+{#                        {% endfor %}#}
+{#                    </select>#}
+{#                </div>#}
+                <h4>Total Price: <span id="total_price">0</span>$</h4>
                 <button type="submit" class="btn btn-dark">Submit</button>
             </form>
         </div>
         <div class="col-3"></div>
     </div>
 </div>
+<script>
+    function getPrice() {
+        let price = document.getElementById('item_price').value;
+        let quantity = document.getElementById('item_quantity').value;
 
+        document.getElementById('total_price').innerHTML = price*quantity
+    }
+</script>
 </body>
 </html>

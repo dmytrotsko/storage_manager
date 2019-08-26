@@ -1,4 +1,4 @@
-{% load filters static %}
+{% load filters static mathfilters %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +10,7 @@
 {% include 'storage_manager/navbar.html' %}
 <div class="container">
     <div class="row">
-        <div class="col-3"></div>
+        <div class="col-2"></div>
         <div class="col">
             {% if deleted %}
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -37,9 +37,11 @@
                 <tr>
                     <th>#</th>
                     <th>Name</th>
-                    <td>Quantity</td>
-                    <td>Transfer</td>
-                    <td>Delete</td>
+                    <th>Quantity</th>
+                    <th>Price per 1</th>
+                    <th>Total Price</th>
+                    <th>Transfer</th>
+                    <th>Delete</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -48,6 +50,8 @@
                         <td>{{ forloop.counter }}</td>
                         <td>{{ i.name }}</td>
                         <td>{{ i.quantity }}</td>
+                        <td>{{ i.price }}</td>
+                        <td>{{ i.price|mul:i.quantity }}</td>
                         <td>
                             <button data-itemname="{{ i.name }}" data-toggle="modal" href="#modalTransfer"
                                     class="btn btn-warning">Transfer
@@ -63,7 +67,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-3"></div>
+        <div class="col-2"></div>
     </div>
 </div>
 <!-- Modal -->
@@ -116,7 +120,6 @@
                         <label for="item_name_to_transfer"></label>
                         <input class="form-control" readonly id="item_name_to_transfer" name="item_name_to_transfer">
                     </div>
-
                     <div class="form-group">
                         <label for="target_storage">Transfer to:</label>
                         <select class="form-control" name="target_storage" id="target_storage">

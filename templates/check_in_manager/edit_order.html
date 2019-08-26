@@ -6,10 +6,13 @@
     {% include 'includes.html' %}
 </head>
 <body>
+{% include 'check_in_manager/navbar.html' %}
 <div class="container">
     <div class="row">
         <div class="col-2"></div>
-        <div class="col">{% include 'check_in_manager/includes/order_form_snippet.html' %}</div>
+        <div class="col">
+            <h1>Editing order #{{ order.id }}</h1>
+            {% include 'check_in_manager/includes/order_form_snippet.html' %}</div>
         <div class="col-2"></div>
     </div>
 </div>
