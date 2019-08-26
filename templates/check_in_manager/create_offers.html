@@ -16,15 +16,18 @@
         <div class="col">
             <form method="POST">
                 {% csrf_token %}
-                {% for field in form %}
-                    <div class="form-group">
-                        {{ field.errors }}
-                        {{ field.label }}
-                        {{ field|addcss:'form-control' }}
-                        {% if field.help_text %}
-                            <p class="help">{{ field.help_text }}</p>
-                        {% endif %}
-                    </div>
+                {{ formset.management_form }}
+                {% for form in formset %}
+                    {% for field in form %}
+                        <div class="form-group">
+                            {{ field.errors }}
+                            {{ field.label }}
+                            {{ field|addcss:'form-control' }}
+                            {% if field.help_text %}
+                                <p class="help">{{ field.help_text }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
                 {% endfor %}
                 <button class="btn btn-primary" type="submit" >Save</button>
             </form>
