@@ -5,7 +5,6 @@ from .models import Order, SpecOccasion, Inclusion, Source, Offer
 from django.contrib.admin.widgets import RelatedFieldWidgetWrapper
 
 
-
 class OrderForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
@@ -74,8 +73,12 @@ class InclusionForm(forms.ModelForm):
 class OfferForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(OfferForm, self).__init__(*args, **kwargs)
+        self.fields['offer_order_id'].widget = forms.HiddenInput()
+        self.fields['offer_order_id'].label = ''
 
     class Meta:
         model = Offer
         fields = '__all__'
-        exclude = ('offer_order_id',)
+
+
+OfferFormSet = forms.formset_factory(OfferForm, extra=4)

@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
-from .forms import OrderForm, OfferForm, InclusionForm, SpecOccasionForm, SourceForm
+from .forms import OrderForm, OfferForm, InclusionForm, SpecOccasionForm, SourceForm, OfferFormSet
 from .models import *
 
 
@@ -11,9 +11,11 @@ def index(request):
         orders_ids = [order.id for order in Order.objects.all()]
     else:
         orders = reversed(Order.objects.filter(order_creator=request.user.id))
-        orders_ids = [order.id for order in Order.objects.filter(order_creator=request.user.id)]
+        orders_ids = [order.id for order in Order.objects.filter(
+            order_creator=request.user.id)]
 
-    offers = Offer.objects.filter(offer_order_id__in=[order_id for order_id in orders_ids])
+    offers = Offer.objects.filter(
+        offer_order_id__in=[order_id for order_id in orders_ids])
     ctx = {
         'orders': orders,
         'offers': offers
@@ -70,18 +72,18 @@ def create_order(request):
 
 
 def create_offers(request, order_id):
-    # TODO: Add adding multiple offers on one page
     if request.method == 'POST':
-        form = OfferForm(data=request.POST)
-        if form.is_valid():
-            new_offer = form.save(commit=False)
-            new_offer.offer_order_id = order_id
-            new_offer.save()
+        formset = OfferFormSet(request.POST)
+        if formset.is_valid():
+            for form in formset:
+                instance = form.save(commit=False)
+                instance.offer_order_id = order_id
+                form.save()
             return HttpResponseRedirect("/check_in_manager/orders_table/order/{}/details/".format(order_id))
     else:
-        form = OfferForm()
+        formset = OfferFormSet()
     ctx = {
-        'form': form
+        'formset': formset
     }
     return render(request, 'check_in_manager/create_offers.html', ctx)
 
@@ -91,4 +93,3 @@ def send_offers(request, order_id):
     for offer in offers:
         print(offer)
     return
-
