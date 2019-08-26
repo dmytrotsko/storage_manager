@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 from indussystem.parameters import add_parameters
 from django.shortcuts import redirect
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.db.models import Max, Min
 
 # Create your views here.
 def stm_index(request):
@@ -159,10 +159,15 @@ def ajax_search(request):
 def reports(request):
     reports = Transaction.objects.all()
     storages = Villa.objects.all()
-
+    max_years = Transaction.objects.aggregate(a=Max('date'))['a'].year
+    min_years = Transaction.objects.aggregate(a=Min('date'))['a'].year
+    years = range(min_years, max_years+1)
+    months = range(1, 13)
     ctx = {
         'reports': reports,
         'storages': storages,
+        'years': years,
+        'months': months
     }
 
     return render(request, 'storage_manager/reports.html', ctx)
@@ -198,6 +203,12 @@ def ajax_reports(request):
             reports = reports.filter(storage_from=st)
         except ObjectDoesNotExist:
             ...
+
+    if request.GET['year'] != 'any':
+        reports = reports.filter(date__year=request.GET['years'])
+
+    if request.GET['month'] != 'any':
+        reports = reports.filter(date__month=request.GET['month'])
 
     reports = reports.order_by('-date')
 

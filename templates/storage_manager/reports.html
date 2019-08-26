@@ -43,12 +43,46 @@
                     {% endfor %}
                 </select>
             </div>
+            <span>Year:</span><br>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-success active">
+                    <input type="radio" name="option_year" value="any" id="year_any" autocomplete="off" checked>Any
+                </label>
+                {% for y in years %}
+                    <label class="btn btn-primary">
+                        <input type="radio" name="option_year" value="{{ y }}" id="year-{{ y }}" autocomplete="off"> {{ y }}
+                    </label>
+                {% endfor %}
+            </div>
+            <br><br>
+            <span>Month:</span><br>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-success active">
+                    <input type="radio" name="option_month" value="any" id="month-any" autocomplete="off" checked>Any
+                </label>
+                {% for m in months %}
+                    <label class="btn btn-primary">
+                        <input type="radio" name="option_month" value="{{ m }}" id="month-{{ m }}" autocomplete="off"> {{ m }}
+                    </label>
+                {% endfor %}
+            </div>
+            <br>
             <small>Hint:</small>
             <div id="search_result"></div>
         </div>
     </div>
 </div>
 <script>
+    function getCheckboxValue(selector) {
+        let checks = document.getElementsByName(selector);
+
+        for (let i = 0, length = checks.length; i < length; i++) {
+            if (checks[i].checked) {
+                return checks[i].value;
+            }
+        }
+    }
+
     function showSearch() {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
@@ -56,11 +90,19 @@
                 document.getElementById("search_result").innerHTML = this.responseText;
             }
         };
+
         q = document.getElementById('search').value;
         r = document.getElementById('report_type').value;
         fr = document.getElementById('storage_from').value;
         to = document.getElementById('storage_to').value;
-        xhttp.open("GET", "/stm/ajax_reports?q=" + q + '&report_type=' + r + '&from=' + fr + '&to=' + to, true);
+        year = getCheckboxValue('option_year')
+        month = getCheckboxValue('option_month')
+        xhttp.open("GET", "/stm/ajax_reports?q=" + q
+            + '&report_type=' + r
+            + '&from=' + fr
+            + '&to=' + to
+            + '&year=' + year
+            + '&month=' + month, true);
         xhttp.send();
     }
 
