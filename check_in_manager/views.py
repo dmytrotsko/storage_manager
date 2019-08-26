@@ -77,8 +77,9 @@ def create_offers(request, order_id):
         if formset.is_valid():
             for form in formset:
                 instance = form.save(commit=False)
-                instance.offer_order_id = order_id
-                form.save()
+                if instance.offer_price_per_night and instance.offer_tax:
+                    instance.offer_order_id = order_id
+                    form.save()
             return HttpResponseRedirect("/check_in_manager/orders_table/order/{}/details/".format(order_id))
     else:
         formset = OfferFormSet()
