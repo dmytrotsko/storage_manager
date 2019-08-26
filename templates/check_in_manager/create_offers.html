@@ -20,23 +20,43 @@
                 {% csrf_token %}
                 {{ formset.management_form }}
                 {% for form in formset %}
-                    {% for field in form %}
-                        <div class="form-group">
-                            {{ field.errors }}
-                            {{ field.label }}
-                            {{ field|addcss:'form-control' }}
-                            {% if field.help_text %}
-                                <p class="help">{{ field.help_text }}</p>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
+                    <div  {% if forloop.counter != 1 %} hidden {% endif %}
+                                                        id="offer-{{ forloop.counter }}">
+                        <h2>Offer #{{ forloop.counter }}</h2>
+                        <hr>
+                        {% for field in form %}
+                            <div class="form-group">
+                                {{ field.errors }}
+                                {{ field.label }}
+                                {{ field|addcss:'form-control' }}
+                                {% if field.help_text %}
+                                    <p class="help">{{ field.help_text }}</p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
                 {% endfor %}
+                <a class="btn btn-warning" onclick="addForm(this)">+ Add offer</a>
                 <button class="btn btn-primary" type="submit">Save</button>
             </form>
         </div>
         <div class="col-2"></div>
     </div>
 </div>
+<br><br>
+<script>
+    let counter = 2;
+
+    function addForm(e) {
+        document.getElementById("offer-" + counter).hidden = false;
+
+        if (counter === 4){
+            e.disabled = true;
+        }
+
+        counter++;
+    }
+</script>
 </body>
 </html>
 
