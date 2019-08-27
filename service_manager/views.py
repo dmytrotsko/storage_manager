@@ -129,3 +129,9 @@ def generate_update_report(request, villa_id, report_id=-1):
            'end_date': end_date}
 
     return render(request, 'service_manager/villa_financial_report.html', ctx)
+
+def delete_report(request,villa_id, report_id):
+    VillaReports.objects.get(pk=report_id).delete()
+    
+    return HttpResponseRedirect(f"/service_manager/{villa_id}/reports")
+
