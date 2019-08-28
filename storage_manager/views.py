@@ -84,7 +84,7 @@ def villa_details(request, id):
             Transaction.objects.create(item_name=item_name,
                                        quantity=item.quantity,
                                        price_per_item=item.price,
-                                       user=request.user.id,
+                                       user=request.user,
                                        type='DL',
                                        storage_from_id=id,
                                        storage_to=None)
@@ -134,6 +134,15 @@ def create_item(request):
                                 quantity=item_quantity,
                                 price=price)
 
+        # Create transaction object for reports
+        Transaction.objects.create(item_name=item_name,
+                                   quantity=item_quantity,
+                                   price_per_item=price,
+                                   user=request.user,
+                                   type='CR',
+                                   storage_to_id=1,
+                                   storage_from=None)
+
         return redirect(add_parameters(request, item=item_name))
 
     ctx = {'villas': villas,
@@ -159,9 +168,12 @@ def ajax_search(request):
 def reports(request):
     reports = Transaction.objects.all()
     storages = Villa.objects.all()
-    max_years = Transaction.objects.aggregate(a=Max('date'))['a'].year
-    min_years = Transaction.objects.aggregate(a=Min('date'))['a'].year
-    years = range(min_years, max_years+1)
+    max_years = Transaction.objects.aggregate(a=Max('date'))['a']
+    min_years = Transaction.objects.aggregate(a=Min('date'))['a']
+    try:
+        years = range(min_years.year, max_years.year+1)
+    except AttributeError:
+        years = []
     months = range(1, 13)
     ctx = {
         'reports': reports,
