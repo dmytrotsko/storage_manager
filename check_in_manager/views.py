@@ -3,6 +3,9 @@ from django.shortcuts import render
 
 from .forms import OrderForm, OfferForm, InclusionForm, SpecOccasionForm, SourceForm, OfferFormSet
 from .models import *
+from .choices import ORDER_STATUS_CHOICES
+
+
 
 
 def index(request):
@@ -54,7 +57,6 @@ def edit_order(request, order_id):
 
 
 def create_order(request):
-    # TODO: Add possibility to create Inclusion, SpecOccasion, Source while creating Order
     source = Source.objects.all()
     if request.method == 'POST':
         form = OrderForm(data=request.POST)
@@ -90,7 +92,11 @@ def create_offers(request, order_id):
 
 
 def send_offers(request, order_id):
+    order_status_list = dict((key, val) for key, val in ORDER_STATUS_CHOICES)
     offers = Offer.objects.filter(offer_order_id=order_id)
+    Order.objects.filter(id=order_id).update(
+        order_status=order_status_list['waiting_for_client_to_accept_offer']
+    )
     for offer in offers:
         print(offer)
-    return
+    return HttpResponseRedirect("/check_in_manager/orders_table/order/{}/details/".format(order_id))

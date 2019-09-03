@@ -1,5 +1,6 @@
 from django.db import models
 from indussystem.models import Villa, User
+from .choices import ORDER_STATUS_CHOICES
 
 
 class Source(models.Model):
@@ -23,9 +24,9 @@ class SpecOccasion(models.Model):
 
 
 class Offer(models.Model):
-    offer_villa = models.ForeignKey(Villa, on_delete=models.CASCADE)
-    offer_price_per_night = models.IntegerField()
-    offer_tax = models.IntegerField()
+    offer_villa = models.ForeignKey(Villa, on_delete=models.CASCADE, null=True, blank=True)
+    offer_price_per_night = models.IntegerField(null=True, blank=True)
+    offer_tax = models.IntegerField(null=True, blank=True)
     offer_order_id = models.CharField(null=True, blank=True, max_length=255)
 
     def __str__(self):
@@ -64,16 +65,6 @@ class Order(models.Model):
     order_comment = models.TextField(blank=True, null=True)
     order_notes = models.TextField(null=True, blank=True)
     order_inclusions = models.ManyToManyField(Inclusion, blank=True)
-
-    ORDER_STATUS_CHOICES = [
-        ('waiting_to_send_offer', 'Client is waiting for offers.'),
-        ('waiting_for_client_to_accept_offer', 'Waiting for client to accept offer.'),
-        ('client_accepted_offer', 'Client accepted the offer.'),
-        ('order_accepted', 'Order is accepted.'),
-        ('order_waiting_for_manager', 'Order is waiting manager to to some stuff.'),
-        ('order_accepted_by_guest', 'Client completely accepted the order.'),
-        ('order_declined_by_guest', 'Client declined the order due to some reason')
-    ]
     order_status = models.CharField(
         max_length=50,
         choices=ORDER_STATUS_CHOICES,
