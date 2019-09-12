@@ -34,7 +34,10 @@ class OrderForm(forms.ModelForm):
         model = Order
         fields = '__all__'
         exclude = (
-            'order_creator', 'order_status')
+            'order_creator', 'order_status',
+            'order_guest_balance', 'order_price',
+            'order_chosen_villa', 'order_decline_reason',
+        )
         widgets = {
             'order_guest_check_in_date': forms.TextInput(attrs={'type': 'date', 'class': 'form-control'}),
             'order_guest_check_out_date': forms.TextInput(attrs={'type': 'date', 'class': 'form-control'}),
@@ -82,3 +85,29 @@ class OfferForm(forms.ModelForm):
 
 
 OfferFormSet = forms.formset_factory(OfferForm, extra=4)
+
+
+class AcceptOfferForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AcceptOfferForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Order
+        fields = (
+            'order_guest_balance',
+            'order_price',
+            'order_comment',
+            'order_notes',
+            'order_chosen_villa'
+        )
+
+
+class DeclineOfferForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(DeclineOfferForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Order
+        fields = (
+            'order_decline_reason',
+        )

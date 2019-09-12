@@ -1,86 +1,84 @@
 {% load check_in_manager_templatetags %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Check-in Manager</title>
     {% include 'includes.html' %}
 </head>
+
 <body>
-{% include 'check_in_manager/navbar.html' %}
-<div class="mx-4">
-    <div class="col">
-    <h1>Orders</h1>
-        <hr>
-        <form method="POST">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="from_date">From:</label>
-                <input class="form-control" type="date" id="from_date" name="from_date">
-            </div>
-            <div class="form-group">
-                <label for="to_date">To:</label>
-                <input class="form-control" type="date" id="to_date" name="to_date">
-            </div>
-            <button class="btn btn-primary" type="submit">Submit</button>
-        </form>
-        <br>
-        <table class="table table-dark table-hover">
-            <thead>
-            <tr>
-                <th scope="col">Order #</th>
-                <th scope="col">Order Status</th>
-                <th scope="col">Check-in</th>
-                <th scope="col">Check-out</th>
-                <th scope="col">Guest Name</th>
-                <th scope="col">Balance</th>
-                <th scope="col">Price</th>
-                <th scope="col">Inclusions</th>
-                <th scope="col">Notes</th>
-                <th scope="col">Offers</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for order in orders %}
-                <tr style="cursor:pointer;" onclick="document.location = '{% url 'order_details' order.id %}';">
-                    <td>{{ order.id }}</td>
-                    <td>{{ order.get_order_status_display }}</td>
-                    <td>{{ order.order_guest_check_in_date }}
-                        {% if order.order_early_check_in_required %}
+    {% include 'check_in_manager/navbar.html' %}
+    <div class="mx-4">
+        <div class="col">
+            <h1>Orders</h1>
+            <hr>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="from_date">From:</label>
+                    <input class="form-control" type="date" id="from_date" name="from_date">
+                </div>
+                <div class="form-group">
+                    <label for="to_date">To:</label>
+                    <input class="form-control" type="date" id="to_date" name="to_date">
+                </div>
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </form>
+            <br>
+            <table class="table table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Order #</th>
+                        <th scope="col">Order Status</th>
+                        <th scope="col">Check-in</th>
+                        <th scope="col">Check-out</th>
+                        <th scope="col">Guest Name</th>
+                        <th scope="col">Balance</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Offers</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr style="cursor:pointer;" onclick="document.location = '{% url 'order_details' order.id %}';">
+                        <td>{{ order.id }}</td>
+                        <td>
+                            {{ order.get_status }}
+                        </td>
+                        <td>{{ order.order_guest_check_in_date }}
+                            {% if order.order_early_check_in_required %}
                             <span class="text-warning">(Early)</span>
-                        {% endif %}
-                    </td>
-                    <td> {{ order.order_guest_check_out_date }}
-                        {% if order.order_late_check_out_required %}
+                            {% endif %}
+                        </td>
+                        <td> {{ order.order_guest_check_out_date }}
+                            {% if order.order_late_check_out_required %}
                             <span class="text-warning">(Late)</span>
-                        {% endif %}
-                    </td>
-                    <td>{{ order.order_guest_name }}</td>
-                    <td>{{ order.order_guest_balance }}</td>
-                    <td>{{ order.order_price }}</td>
-                    <td>
-                        <ul>
-                            {% for inclusion in order.order_inclusions.all %}
-                                <li>{{ inclusion.inclusion_text }}</li>
-                            {% empty %}
-                                <li>None</li>
-                            {% endfor %}
-                        </ul>
-                    </td>
-                    <td>{% firstof order.order_notes 'None' %}</td>
-                    <td>
-                        {% if order.id|check_if_order_has_offers %}
-                            <a class="btn btn-warning" href="{% url 'send_offers' order.id %}">Send offers</a>
-                        {% else %}
+                            {% endif %}
+                        </td>
+                        <td>{{ order.order_guest_name }}</td>
+                        <td>{{ order.order_guest_balance }}</td>
+                        <td>{{ order.order_price }}</td>
+                        <td>
+                            {% if order.order_status == 0 %}
                             <a class="btn btn-primary" href="{% url 'create_offers' order.id %}">Create offers</a>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                            {% elif order.order_status == 1 %}
+                            <a class="btn btn-warning" href="{% url 'send_offers' order.id %}">Send offers</a>
+                            {% elif order.order_status == 2 %}
+                            <a class="btn btn-warning" href="{% url 'accept_offer' order.id %}">Accept</a>
+                            <a class="btn btn-warning" href="{% url 'decline_offer' order.id %}">Decline</a>
+                            {% else %}
+                                
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
 </body>
+
 </html>
