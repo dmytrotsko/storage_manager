@@ -62,14 +62,14 @@
                         <td>{{ order.order_price }}</td>
                         <td>
                             {% if order.order_status == 0 %}
-                            <a class="btn btn-primary" href="{% url 'create_offers' order.id %}">Create offers</a>
+                                <a class="btn btn-primary" href="{% url 'create_offers' order.id %}">Create offers</a>
                             {% elif order.order_status == 1 %}
-                            <a class="btn btn-warning" href="{% url 'send_offers' order.id %}">Send offers</a>
+                                <a class="btn btn-warning" href="{% url 'send_offers' order.id %}">Send offers</a>
                             {% elif order.order_status == 2 %}
-                            <a class="btn btn-warning" href="{% url 'accept_offer' order.id %}">Accept</a>
-                            <a class="btn btn-warning" href="{% url 'decline_offer' order.id %}">Decline</a>
+                                <a class="btn btn-warning" href="{% url 'accept_offer' order.id %}">Accept</a>
+                                <a class="btn btn-warning" href="{% url 'decline_offer' order.id %}">Decline</a>
                             {% else %}
-                                
+                                No action available
                             {% endif %}
                         </td>
                     </tr>

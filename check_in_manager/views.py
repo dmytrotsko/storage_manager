@@ -90,7 +90,7 @@ def create_offers(request, order_id):
                     form.save()
             order.order_status = 1
             order.save()
-            return HttpResponseRedirect("/check_in_manager/orders_table/order/{}/details/".format(order_id))
+            return HttpResponseRedirect("/check_in_manager/")
     else:
         formset = OfferFormSet()
     ctx = {
@@ -116,7 +116,7 @@ def send_offers(request, order_id):
     except Exception as e:
         order.order_offers_sent = False
     order.save()
-    return HttpResponseRedirect("/check_in_manager/orders_table/order/{}/details/".format(order_id))
+    return HttpResponseRedirect("/check_in_manager/")
 
 
 def accept_offer(request, order_id):
@@ -128,7 +128,7 @@ def accept_offer(request, order_id):
             order.order_creator = request.user
             order.order_status = 3
             order.save()
-            return HttpResponseRedirect("/check_in_manager/orders_table/order/{}/details/".format(order.id))
+            return HttpResponseRedirect("/check_in_manager/")
     else:
         form = AcceptOfferForm(instance=order)
     ctx = {
@@ -147,7 +147,7 @@ def decline_offer(request, order_id):
             order.order_creator = request.user
             order.order_status = 4
             order.save()
-            return HttpResponseRedirect("/check_in_manager/orders_table/order/{}/details/".format(order.id))
+            return HttpResponseRedirect("/check_in_manager/")
     else:
         form = DeclineOfferForm(instance=order)
     ctx = {
