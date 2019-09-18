@@ -105,8 +105,8 @@ def send_offers(request, order_id):
     try:
         send_email_message(
             template_name='send_offers',
-            recipients=['dmytrotsko@gmail.com'],
-            sender="dmytrotsko@gmail.com",
+            recipients=[order.order_guest_email],
+            sender="reservation@villagoa.in",
             context={
                 'offers': offers
             },
