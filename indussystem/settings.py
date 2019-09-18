@@ -82,7 +82,10 @@ WSGI_APPLICATION = 'indussystem.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(default='DATABASE_URL'),
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite',
+    }
 }
 
 # Password validation
@@ -133,10 +136,9 @@ LOGOUT_REDIRECT_URL = 'login'
 LOGIN_URL = 'login'
 AUTH_USER_MODEL = 'indussystem.User'
 
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 
-EMAIL_PORT = 
-EMAIL_HOST_USER = 
-EMAIL_HOST_PASSWORD = 
-EMAIL_USE_SSL = 
+EMAIL_HOST = 'pid'
+EMAIL_PORT = 1488
+EMAIL_HOST_USER = 'aaa'
+EMAIL_HOST_PASSWORD = 'aaa'
+EMAIL_USE_SSL = 'YES'

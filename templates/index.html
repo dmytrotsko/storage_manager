@@ -3,10 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Index</title>
+    {% include 'includes.html' %}
 </head>
 <body>
-<a href="{% url 'villas_list' %}">Service Manager</a>
-<a href="{% url 'villa_list' %}">Storage Manager</a>
-<a href="{% url 'orders_table' %}">Check-in Manager</a>
+{% include 'main_navbar.html' %}
+<div class="container">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col">
+            <h1>Villa list</h1>
+            <hr>
+            <table class="table table-dark">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Villa Name</th>
+                    <th>Storage</th>
+                    <th>Service</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for villa in villas %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ villa.name }}</td>
+                        <td><a href="{% url 'villa_details' villa.id %}" class="btn btn-primary">Storage</a></td>
+                        <td><a href="{% url 'villa_expenses' villa.id %}" class="btn btn-primary">Service</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
 </body>
 </html>

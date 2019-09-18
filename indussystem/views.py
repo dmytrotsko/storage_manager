@@ -1,13 +1,35 @@
 from django.contrib import auth
 from django.contrib.auth import logout as django_logout
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .models import *
+from indussystem.parameters import add_parameters
 
 from global_login_required import login_not_required
 
 
 def index(request):
-    return render(request, 'index.html')
+    villas = Villa.objects.all()
+    ctx = {
+        'villas': villas
+    }
+
+    return render(request, 'index.html', ctx)
+
+
+def create_villa(request):
+    if request.method == 'POST':
+        villa_name = request.POST.get('villa_name')
+        Villa.objects.create(name=villa_name)
+        return redirect(add_parameters(request, villa=f'{villa_name}'))
+
+    ctx = {'v': None}
+
+    if request.GET.get('villa'):
+        ctx['v'] = request.GET.get('villa')
+
+    return render(request, 'create_villa.html', ctx)
+
 
 @login_not_required
 def login(request):

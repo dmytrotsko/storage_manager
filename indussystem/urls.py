@@ -26,6 +26,7 @@ urlpatterns = [
     path('service_manager/', include('service_manager.urls')),
     path('stm/', include('storage_manager.urls')),
     path('check_in_manager/', include('check_in_manager.urls')),
+    path('create_villa', views.create_villa, name='create_villa'),
     path('', views.index, name='index'),
     path('login', views.login, name='login'),
     path('logout', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout')
