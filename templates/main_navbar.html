@@ -1,22 +1,23 @@
-{% url 'orders_table' as index_url %}
-{% url 'stm_index' as stm_index %}
-{% url 'create_order' as create_order %}
+{% url 'index' as index %}
+{% url 'create_villa' as create_villa %}
 {% url 'villa_list' as villa_list %}
 {% url 'villas_list' as srv %}
 {% url 'stm_index' as stm %}
+{% url 'orders_table' as ckin %}
 {% url 'reports' as reports %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-    </button>
+    </button> 
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-            {% include 'includes/navbar_button.html' with outline=False url=index_url name='Home' %}
-            {% include 'includes/navbar_button.html' with outline=False url=create_order name='Create Order' %}
+            {% include 'includes/navbar_button.html' with outline=False url=index name='Home' %}
+            {% include 'includes/navbar_button.html' with outline=False url=create_villa name='Create Villa' %}
             {% include 'includes/navbar_button.html' with outline=True url=srv name='Service Manager' %}
             {% include 'includes/navbar_button.html' with outline=True url=stm name='Storage Manager' %}
+            {% include 'includes/navbar_button.html' with outline=True url=ckin name='Check-in Manager' %}
         </ul>
     </div>
     <a class="nav-link" style="color: white">User: {{ user.username }}</a>

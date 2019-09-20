@@ -21,12 +21,12 @@ def create_villa(request):
     if request.method == 'POST':
         villa_name = request.POST.get('villa_name')
         Villa.objects.create(name=villa_name)
-        return redirect(add_parameters(request, villa=f'{villa_name}'))
+        return redirect(add_parameters(request, v=f'{villa_name}'))
 
     ctx = {'v': None}
 
-    if request.GET.get('villa'):
-        ctx['v'] = request.GET.get('villa')
+    if request.GET.get('v'):
+        ctx['v'] = request.GET.get('v')
 
     return render(request, 'create_villa.html', ctx)
 

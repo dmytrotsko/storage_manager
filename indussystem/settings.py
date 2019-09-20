@@ -82,10 +82,7 @@ WSGI_APPLICATION = 'indussystem.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite',
-    }
+    'default': dj_database_url.config(default=os.environ['DATABASE_URL']),
 }
 
 # Password validation
@@ -123,7 +120,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static', "staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
@@ -137,8 +134,9 @@ LOGIN_URL = 'login'
 AUTH_USER_MODEL = 'indussystem.User'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'pid'
-EMAIL_PORT = 1488
-EMAIL_HOST_USER = 'aaa'
-EMAIL_HOST_PASSWORD = 'aaa'
-EMAIL_USE_SSL = 'YES'
+
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT'))
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL')

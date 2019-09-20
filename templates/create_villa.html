@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    {% include 'includes.html' %}
+</head>
+
+<body>
+    {% include 'main_navbar.html' %}
+    <div class="container">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col">
+                {% if v %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    You successfully create villa <strong>{{ v }}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endif %}
+                <h1>Create Villa</h1>
+                <hr>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="villan_name">Villa Name</label>
+                        <input class="form-control" type="text" name="villa_name" id="villa_name">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </div>
+</body>
+
+</html>
